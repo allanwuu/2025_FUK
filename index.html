@@ -4,812 +4,963 @@
 <meta charset="UTF-8">
 <title>2025懶豬的福岡之旅</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-/* 為了讓您程式碼保持完整和美觀，請將這段完整的 <style> 內容也一併複製貼上，確保頁面佈局不會亂掉。 */
-/* ---------------- 全域設定 ---------------- */
+/* --- 核心變數設定 --- */
+:root {
+  /* 指定的主色調 RGB(188, 204, 196) */
+  --main-color: rgb(188, 204, 196); 
+  /* 稍微深一點的顏色，用於文字或按鈕選中態 */
+  --main-dark: rgb(138, 154, 146); 
+  /* 淺色背景 */
+  --main-bg: rgb(245, 248, 246);
+  
+  /* 藍色系 (用於天氣與匯率) */
+  --blue-bg: #f0f9ff;
+  --blue-border: #bae6fd;
+  --blue-text: #0369a1;
+  --blue-btn: #38bdf8;
+}
+
 body {
   margin: 0;
-  background: #fdfcff;
+  background: #fff;
   font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", sans-serif;
-  color: #333;
+  color: #444;
+  padding-bottom: 60px;
 }
-/* ---------------- Tab 切換列 ---------------- */
+
+/* --- Tab 切換列 --- */
 .tab-bar {
   display: flex;
   position: sticky;
   top: 0;
-  background: white;
-  padding: 10px 0;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 10px 5px;
   border-bottom: 1px solid #eee;
-  z-index: 10;
+  z-index: 100;
+  overflow-x: auto;
+  gap: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
+/* 隱藏捲軸 */
+.tab-bar::-webkit-scrollbar { display: none; }
+
 .tab-btn {
-  flex: 1;
+  flex: 0 0 auto;
   text-align: center;
-  padding: 10px 0;
+  padding: 8px 16px;
   font-size: 15px;
   font-weight: 600;
-  color: #666;
-  border-bottom: 3px solid transparent;
+  color: #888;
+  background: #f5f5f5;
+  border-radius: 20px; /* 圓潤膠囊狀 */
   cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
+
+/* 選中狀態：變成指定的深綠色 */
 .tab-btn.active {
-  color: #ff6f9c;
-  border-bottom: 3px solid #ff6f9c;
+  background-color: var(--main-color);
+  color: #fff; /* 白字比較清楚 */
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(188, 204, 196, 0.6);
 }
-/* ---------------- 卡片樣式（可愛版） ---------------- */
+
+/* --- 天氣小工具 (維持藍色系) --- */
+.weather-widget {
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-border);
+  color: var(--blue-text);
+  margin: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(186, 230, 253, 0.3);
+}
+.weather-btn {
+  background: #fff;
+  border: 1px solid var(--blue-border);
+  color: var(--blue-text);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.weather-btn:hover {
+  background: #e0f2fe;
+}
+.weather-btn:active {
+  transform: scale(0.95);
+}
+
+/* --- 卡片通用樣式 --- */
 .card {
   background: white;
   margin: 14px;
-  padding: 16px;
-  border-radius: 18px;
-  box-shadow: 0 4px 12px rgba(255, 180, 200, 0.25);
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
 .card-title {
   font-size: 17px;
   font-weight: bold;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #333;
+  border-left: 4px solid var(--main-color); /* 標題左側綠線 */
+  padding-left: 8px;
 }
 .card-sub {
   color: #666;
   font-size: 14px;
-  margin: 4px 0 8px;
+  margin: 4px 0 10px;
 }
 .status {
-  padding: 2px 10px;
+  padding: 3px 10px;
   border-radius: 12px;
   font-size: 12px;
   margin-left: auto;
   font-weight: bold;
 }
-.status-red { background: #ffdddd; color: #c00; }
-.status-yellow { background: #fff2c2; color: #c98b00; }
-.status-green { background: #d9ffd9; color: #0a8f00; }
-/* ---------------- 行程內容 ---------------- */
+/* 狀態燈號顏色不變，維持功能性 */
+.status-red { background: #ffebee; color: #c62828; }
+.status-yellow { background: #fffde7; color: #f9a825; }
+.status-green { background: #e8f5e9; color: #2e7d32; }
+
 .section-title {
   font-weight: bold;
-  margin: 10px 0 6px;
+  margin: 12px 0 6px;
   font-size: 15px;
+  color: var(--main-dark);
 }
 .item {
   padding: 6px 0;
   font-size: 14px;
+  line-height: 1.5;
+  border-bottom: 1px dashed #f0f0f0;
 }
+.item:last-child { border-bottom: none; }
+
 .time-label {
   display: inline-block;
-  width: 3.8em;
   font-weight: 700;
-  color: #ff6f9c;
+  color: var(--main-dark);
+  margin-right: 5px;
 }
 .mapcode {
   font-size: 12px;
-  color: #888;
+  color: #777;
+  background-color: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 4px;
 }
 .note {
-  font-size: 12px;
+  font-size: 13px;
   color: #666;
+  margin-top: 4px;
 }
 a {
-  color: #3b82f6;
+  color: #558b76; /* 連結改用深綠色 */
   text-decoration: none;
+  font-weight: 500;
 }
 a:hover {
   text-decoration: underline;
 }
-/* ---------------- ⭐ 費用追蹤器的樣式 ⭐ ---------------- */
+
+/* --- 匯率換算器 (維持藍色系) --- */
+#rate-calculator {
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-border);
+}
+#rate-calculator .card-title {
+  color: var(--blue-text);
+  border-left-color: var(--blue-btn);
+}
+.rate-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+.rate-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.rate-input-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 100%;
+}
+.calc-result {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--blue-text);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* --- 費用追蹤器 (配合主色調) --- */
 #expense-tracker {
-    margin: 14px;
-    padding: 16px;
-    border: 1px solid #ff6f9c40; 
-    border-radius: 18px;
-    background-color: #ffeef2;
+  background-color: var(--main-bg);
+  border: 1px solid var(--main-color);
 }
-/* 輸入表單佈局 */
 .input-form {
-    display: flex;
-    flex-wrap: wrap; 
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
 }
-.input-form input, 
-.input-form select { 
-    flex-grow: 1; 
-    padding: 10px;
-    border: 1px solid #ff6f9c80;
-    border-radius: 4px;
-    box-sizing: border-box;
-    min-width: 100px;
-}
-#expense-date { order: 1; }
-#expense-type { order: 2; } 
-#expense-item { order: 3; }
-#expense-amount { order: 4; }
-#expense-note { order: 5; } 
-.input-actions {
-    order: 6; 
-    display: flex;
-    gap: 10px;
-    flex-grow: 1;
-}
-.input-actions button {
-    flex: 1; 
-    min-width: 80px;
+.input-form input,
+.input-form select {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
 }
 .input-form button {
-    padding: 10px 15px;
-    background-color: #ff6f9c; 
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s;
-}
-#add-expense-btn {
-    background-color: #4CAF50; 
-}
-#save-expense-btn {
-    background-color: #007bff; 
-    display: none; 
-}
-/* 表格樣式 */
-#expense-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-#expense-table th, #expense-table td {
-    border: 1px solid #ffd0e0;
-    padding: 10px;
-    text-align: left;
-    font-size: 14px;
+  padding: 10px 15px;
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
 }
 #expense-table th {
-    background-color: #ffdae4;
-    font-weight: bold;
+  background-color: var(--main-color);
+  color: white;
+  padding: 8px;
 }
-/* 總計區塊樣式 */
-#total-summary-row td {
-    background-color: #f7f7f7;
-    font-weight: bold;
-    font-size: 1.1em;
+#expense-table td {
+  border: 1px solid #eee;
+  padding: 8px;
 }
-#balance-row td {
-    background-color: #fff8e1; 
-    font-weight: bold;
-    font-size: 1.3em;
+.type-income { color: #2e7d32; font-weight: bold; }
+.type-expense { color: #c62828; font-weight: bold; }
+
+/* --- 行程時間軸 --- */
+.day-header {
+  margin: 15px 14px 5px;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
 }
-/* 餘額狀態顏色 */
-.balance-positive {
-    color: #0a8f00; 
+.day-date {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--main-dark);
+  margin-bottom: 5px;
 }
-.balance-negative {
-    color: #c00; 
+.day-title {
+  font-size: 15px;
+  color: #666;
 }
-/* 移除/編輯按鈕樣式 */
-#expense-body button {
-    background-color: #f44336; 
-    color: white;
-    border: none;
-    padding: 5px 8px;
-    cursor: pointer;
-    border-radius: 3px;
-    font-size: 12px;
-    margin-right: 5px;
+
+.timeline-container {
+  margin: 0 14px;
+  padding: 10px 0 30px;
+  border-left: 2px solid #eee; /* 左側連接線 */
+  margin-left: 30px; /* 調整整體縮排 */
 }
-#expense-body button.edit-btn {
-    background-color: #ff9800; 
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 20px;
+  padding-left: 20px; /* 給時間框空間 */
 }
-/* 收入/支出類型顏色標記 */
-.type-income { color: #0a8f00; font-weight: bold; }
-.type-expense { color: #c00; font-weight: bold; }
+
+/* 時間框樣式 */
+.time-box {
+  position: absolute;
+  left: -60px; /* 往左拉出 */
+  top: 0;
+  width: 50px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 6px;
+  background: var(--main-color); /* 背景使用主色 */
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.content-card {
+  background: white;
+  padding: 12px 14px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+}
+.content-card h4 {
+  margin: 0 0 5px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+.content-card p {
+  margin: 0 0 5px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 車程小卡 */
+.drive-info {
+  margin-top: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #555;
+  background: #fdfdfd;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  display: inline-block;
+  border-left: 3px solid var(--main-color);
+}
 </style>
 </head>
 
 <body>
 
+<!-- 分頁導覽列 -->
 <div class="tab-bar">
   <div class="tab-btn active" data-page="prep">行前準備</div>
-  <div class="tab-btn" data-page="day1">Day 1</div>
-  <div class="tab-btn" data-page="day2">Day 2</div>
-  <div class="tab-btn" data-page="day3">Day 3</div>
-  <div class="tab-btn" data-page="day4">Day 4</div>
-  <div class="tab-btn" data-page="day5">Day 5</div>
+  <div class="tab-btn" data-page="day1">D1 福岡</div>
+  <div class="tab-btn" data-page="day2">D2 別府</div>
+  <div class="tab-btn" data-page="day3">D3 湯布院</div>
+  <div class="tab-btn" data-page="day4">D4 太宰府</div>
+  <div class="tab-btn" data-page="day5">D5 回程</div>
   <div class="tab-btn" data-page="expense">費用紀錄</div>
 </div>
 
+<!-- ================= 頁面內容開始 ================= -->
+
+<!-- 行前準備 -->
 <div id="prep" class="page">
   <div class="card">
-    <div class="card-title">💡必要文件準備</div>
+    <div class="card-title">💡 必要文件準備</div>
     <div class="item">• 護照</div>
-    <div class="item">• 台灣駕照</div>
-    <div class="item">• 日本翻譯駕照</div>
+    <div class="item">• 台灣駕照/日本翻譯駕照 </div>
+    <div class="item">• 租車/Airbnb 訂購單 </div>
+    <div class="item">• 寶寶粥中英文對照文件</div>
   </div>
+
   <div class="card">
-    <div class="card-title">📱 購買 eSIM 網卡 
-      <span class="status status-red">尚未訂</span>
-    </div>
-    <div class="card-sub">需求：吃到飽 eSIM・5 人份</div>
+    <div class="card-title">📱 購買 eSIM 網卡 <span class="status status-red">尚未訂</span></div>
+    <div class="card-sub">需求：eSIM 5人份 (吳家x2 蔡家x2 王x1) </div>
     <div class="item">💡 建議出發前一天掃描 QR Code 設定。</div>
   </div>
+
   <div class="card">
-    <div class="card-title">🛂 Visit Japan Web 
-      <span class="status status-red">尚未填寫</span>
-    </div>
+    <div class="card-title">🛂 Visit Japan Web <span class="status status-red">尚未填寫</span></div>
     <div class="item">請於出發前完成入境審查與海關申報。</div>
-    <div class="item">🔗
-      <a href="https://vjw-lp.digital.go.jp" target="_blank">官方網站（中文）</a>
-    </div>
+    <div class="item">🔗 <a href="https://vjw-lp.digital.go.jp" target="_blank">官方網站（中文）</a></div>
   </div>
+
   <div class="card">
-    <div class="card-title">🚌 機場接送（去程）
-      <span class="status status-yellow">待訂</span>
-    </div>
-    <div class="item">預約機場接送</div>
-    <div class="item">⏰ 出發時間：2025/12/17 凌晨 04:00</div>
-    <div class="item">🏠 家裡 → 桃園機場 T1</div>
-  </div>
-  <div class="card">
-    <div class="card-title">✈ 航班資訊
-      <span class="status status-green">已確認</span>
-    </div>
+    <div class="card-title">✈ 航班資訊 <span class="status status-green">已確認</span></div>
+    
     <div class="section-title">去程　桃園 → 福岡（虎航 IT240）</div>
-    <div class="item"><span class="time-label">06:00</span> 桃園國際機場 T1 出發</div>
-    <div class="item"><span class="time-label">10:20</span> 抵達 福岡國際機場</div>
-    <div class="item">🧳 行李：35kg</div>
-    <div class="item">💺 座位：10A、10B、10D</div>
+    <div class="item"><span class="time-label">06:45</span> 桃園國際機場 T1 出發</div>
+    <div class="item"><span class="time-label">10:00</span> 抵達 福岡國際機場</div>
+    
     <div class="section-title" style="margin-top:14px;">回程　福岡 → 桃園（華航 CI117）</div>
     <div class="item"><span class="time-label">20:35</span> 福岡國際機場 T1 出發</div>
     <div class="item"><span class="time-label">22:20</span> 抵達 桃園國際機場 T2</div>
-    <div class="item">🧳 行李：每人1件 23kg 小孩也有 </div>
-    <div class="item">💺 座位：48J、48K</div>
   </div>
 </div>
 
+<!-- Day 1 -->
 <div id="day1" class="page" style="display:none;">
-    <div class="card">
-      <div class="card-title">🚗 Day 1 — 桃園 → 福岡 → 別府</div>
-      <div class="item">
-        <span class="time-label">06:00</span> 桃園國際機場 T1 出發
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4" target="_blank">Map</a>)
-      </div>
-      <div class="item">
-        <span class="time-label">10:20</span> 抵達 福岡國際機場
-        (<a href="https://www.google.com/maps/search/?api=1&query=Fukuoka+Airport" target="_blank">Map</a>)
-      </div>
-      <div class="item">
-        <span class="time-label">11:23</span> バジェット･レンタカー 福岡空港店（Budget）
-        (<a href="https://www.google.com/maps/search/?api=1&query=Budget+Rent+a+Car+Fukuoka+Airport" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：13 354 126*14</div>
-      </div>
-      <div class="item">
-        <span class="time-label">12:37</span> LaLaport 福岡（ららぽーと福岡）
-        (<a href="https://www.google.com/maps/search/?api=1&query=LaLaport+Fukuoka" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：13 233 333*37</div>
-      </div>
-      <div class="item">
-        <span class="time-label">17:26</span> 抵達・Check-in：別邸 安
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E9%82%B8+%E5%AE%89+%E4%B8%8A%E5%B9%B3%E7%94%B0%E7%94%BA1732-11" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：46 523 082*55 </div>
-        <div class="note">
-          ⭐ 放東西休息一下而已，不要太久!!!!!! </div>
-      </div>
-      <div class="item">
-        <span class="time-label">19:00</span> 晚餐🥣雞肉天婦羅始祖 東洋軒 
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E6%B4%8B%E8%BB%92+%E9%9B%9E%E8%82%89%E5%A4%A9%E5%A9%86%E7%BE%85" target="_blank">Map</a>)
-        或是 🥣別府冷麵 胡月
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E5%BA%9C+%E8%83%A1%E6%9C%88%E5%86%B7%E9%BA%B5" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：東洋軒46 465 637*58   冷麵46 465 786*83  </div>
-      </div>
-      <div class="item">
-        <span class="time-label">20:00</span> 別府塔
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E5%BA%9C%E3%82%BF%E3%83%AF%E3%83%BC" target="_blank">Map</a>)
-      <div class="note">
-          ⭐ 從冷麵走路就會到了，就在旁邊 </div>
-      </div>
-      <div class="item">
-        <span class="time-label">21:00</span> 回民宿 別邸 安
-        <div class="mapcode">MAPCODE：46 523 082*55 </div>
+  <div class="day-header">
+    <span class="day-date">12/17 (三) D1</span>
+    <span class="day-title">🚗 桃園 → 福岡 → 別府</span>
+  </div>
+
+  <!-- D1 天氣：別府 -->
+  <div class="weather-widget" data-lat="33.279" data-lon="131.500">
+    <span>🌤️ 別府天氣：<span class="w-temp">--</span>°C <span class="w-desc"></span></span>
+    <button class="weather-btn" onclick="getWeather(this)">更新</button>
+  </div>
+
+  <div class="timeline-container">
+    
+    <div class="timeline-item">
+      <div class="time-box">10:00</div>
+      <div class="content-card">
+        <h4>抵達 福岡國際機場</h4>
+        <div class="note">⭐ 到國際航廈1樓的租車櫃檯先報到，搭接駁車</div>
       </div>
     </div>
+
+    <div class="timeline-item">
+      <div class="time-box">11:30</div>
+      <div class="content-card">
+        <h4>Budget 租車 福岡空港店</h4>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=Budget+Rent+a+Car+Fukuoka+Airport" target="_blank">地圖連結</a></p>
+        <div class="mapcode">MAPCODE：13 354 156*17</div>
+        <div class="drive-info">
+          🚙 往 LaLaport：約 15–20 分鐘
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">12:37</div>
+      <div class="content-card">
+        <h4>LaLaport 福岡</h4>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=LaLaport+Fukuoka" target="_blank">地圖連結</a></p>
+        <div class="mapcode">MAPCODE：13 233 182*28</div>
+        <div class="note">⭐ 預計停留2小時，最晚3點離開</div>
+        <div class="drive-info">
+          🚙 往 別府：約 1.5–2 小時 (高速)
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">17:26</div>
+      <div class="content-card">
+        <h4>Check-in：別邸 安</h4>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E9%82%B8+%E5%AE%89" target="_blank">地圖連結</a></p>
+        <div class="mapcode">MAPCODE：46 404 667*36</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">19:00</div>
+      <div class="content-card">
+        <h4>晚餐🥣 東洋軒 或 胡月冷麵</h4>
+        <div class="note">都在附近，看哪家排隊人少</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">20:00</div>
+      <div class="content-card">
+        <h4>別府塔（Beppu Tower）</h4>
+        <div class="mapcode">MAPCODE：46 406 390*55</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">21:30</div>
+      <div class="content-card">
+        <h4>Marushoku 超市</h4>
+        <div class="note">⭐ 買和牛跟泡麵</div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
+<!-- Day 2 -->
 <div id="day2" class="page" style="display:none;">
-    <div class="card">
-      <div class="card-title">🦁 Day 2 — 九州自然動物園 & 別府美食</div>
+  <div class="day-header">
+    <span class="day-date">12/18 (四) D2</span>
+    <span class="day-title">🦁 九州自然動物園 & 別府美食</span>
+  </div>
 
-      <div class="item">
-        <span class="time-label">08:30</span> 出發：別邸 安
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E9%82%B8+%E5%AE%89+%E4%B8%8A%E5%B9%B3%E7%94%B0%E7%94%BA1732-11" target="_blank">Map</a>)
-      </div>
-      <div class="item">
-        <span class="time-label">09:00</span> 九州自然動物園 アフリカンサファリ
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E4%B9%9D%E5%B7%9E%E8%87%AA%E7%84%B6%E5%8B%95%E7%89%A9%E5%9C%92+%E3%82%A2%E3%83%95%E3%83%AA%E3%82%AB%E3%83%B3%E3%82%B5%E3%83%95%E3%82%A1%E3%83%AA" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：46 664 168*72</div>
-      </div>
-      <div class="item">
-        <span class="time-label">14:16</span> 🍮地獄蒸布丁 岡本屋
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E5%B2%A1%E6%9C%AC%E5%B1%8B+%E5%9C%B0%E7%8D%84%E8%92%B8%E5%B8%83%E4%B8%81" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：46 519 707*71</div>
-      </div>
-      <div class="item">
-        <span class="time-label">15:24</span> 地獄蒸工房 鐵輪
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E5%9C%B0%E7%8D%84%E8%92%B8%E5%B7%A5%E6%88%BF+%E9%90%B5%E8%BC%AA" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：46 522 403*86</div>
-      </div>
-      <div class="item">
-        <span class="time-label">16:28</span> 晚餐🥣別府甘味茶屋（Amamichaya）
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E5%BA%9C%E7%94%98%E5%91%B3%E8%8C%B6%E5%B1%8B" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：46 493 800*75</div>
-        <div class="note">
-          ⭐ 還沒有預約，要提前兩週線上預約（12/3預約）<br>
-          <a href="https://epark.jp/shopinfo/jsp609274/?utm_source=justpass_widget&utm_medium=referral&widgetimp=1" target="_blank">
-            線上預約連結（EPARK）
-          </a>
-        </div>
-      </div>
-      <div class="item">
-        <span class="time-label">19:00</span> 附近超市 Marushoku 採買
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E3%83%9E%E3%83%AB%E3%82%B7%E3%83%A7%E3%82%AF+%E3%82%84%E3%81%BE%E3%81%AA%E3%81%BF%E5%BA%97" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：46 522 175*47</div>
-      </div>
-      
-      <div class="item">
-        <span class="time-label">19:40</span> 回民宿 別邸 安
-        <div class="mapcode">MAPCODE：46 523 082*55 </div>
-      </div>
+  <!-- D2 天氣：別府 -->
+  <div class="weather-widget" data-lat="33.279" data-lon="131.500">
+    <span>🌤️ 別府天氣：<span class="w-temp">--</span>°C <span class="w-desc"></span></span>
+    <button class="weather-btn" onclick="getWeather(this)">更新</button>
+  </div>
 
+  <div class="timeline-container">
+    
+    <div class="timeline-item">
+      <div class="time-box">08:30</div>
+      <div class="content-card">
+        <h4>出發：別邸 安</h4>
+        <div class="drive-info">🚙 往 動物園：約 25–35 分鐘</div>
+      </div>
     </div>
+
+    <div class="timeline-item">
+      <div class="time-box">09:00</div>
+      <div class="content-card">
+        <h4>九州自然動物園</h4>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=%E4%B9%9D%E5%B7%9E%E8%87%AA%E7%84%B6%E5%8B%95%E7%89%A9%E5%9C%92" target="_blank">地圖連結</a></p>
+        <div class="mapcode">MAPCODE：46 664 168*42</div>
+        <div class="note">🎫 門票 ¥17,100 (6大1小) / 巴士 ¥10,500</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">14:30</div>
+      <div class="content-card">
+        <h4>🍮 地獄蒸布丁 岡本屋</h4>
+        <div class="mapcode">MAPCODE：46 519 680*75</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">15:30</div>
+      <div class="content-card">
+        <h4>地獄蒸工房 鐵輪</h4>
+        <div class="note">體驗用溫泉蒸氣蒸煮食物</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">17:30</div>
+      <div class="content-card">
+        <h4>晚餐🥣 別府甘味茶屋</h4>
+        <div class="note">⭐ EPARK 已預約</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">19:30</div>
+      <div class="content-card">
+        <h4>唐吉訶德 別府店</h4>
+        <div class="mapcode">MAPCODE：46 405 564*44</div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
+<!-- Day 3 -->
 <div id="day3" class="page" style="display:none;">
-    <div class="card">
-      <div class="card-title">🎐 Day 3 — 湯布院散策 → 回到福岡</div>
+  <div class="day-header">
+    <span class="day-date">12/19 (五) D3</span>
+    <span class="day-title">🎐 湯布院散策 → 回到福岡</span>
+  </div>
 
-      <div class="item">
-        <span class="time-label">09:00</span> 出發：別邸 安
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E9%82%B8+%E5%AE%89+%E4%B8%8A%E5%B9%B3%E7%94%B0%E7%94%BA1732-11" target="_blank">Map</a>)
-      </div>
-      <div class="item">
-        <span class="time-label">09:36</span> Times 停車場 – 湯布院金鱗湖
-        (<a href="https://www.google.com/maps/search/?api=1&query=Times+%E6%B9%AF%E5%B8%83%E9%99%BD+%E9%87%91%E9%B1%97%E6%B9%96" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：269 359 671*78</div>
-        <div class="note">
-          ⭐ 車子停在這邊，然後可以走路逛商店街，單程大約1公里 </div>
-      </div>
-      <div class="item">
-        <span class="time-label">10:40</span> 天祖神社
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E5%B8%83%E9%99%BD+%E5%A4%A9%E7%A5%96%E7%A5%9E%E7%A4%BE" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：269 359 557*56</div>
-      </div>
-      <div class="item">
-        <span class="time-label">11:18</span> 湯布院商店街
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E5%B8%83%E9%99%BD+%E5%95%86%E5%BA%97%E8%A1%97" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：269 357 086*42</div>
-      </div>
-      <div class="item">
-        <span class="time-label">13:21</span> B-SPEAK 本店（蛋糕卷）
-        (<a href="https://www.google.com/maps/search/?api=1&query=B-speak+Yufuin" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：269 358 402*05</div>
-      </div>
-      <div class="item">
-        <span class="time-label">13:32</span> 湯之坪街道
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E3%81%AE%E5%9D%AA%E8%A1%97%E9%81%93" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：269 358 471*52</div>
-      </div>
-      <div class="item">
-        <span class="time-label">16:00</span> 抵達・Check-in：SOTEL Fukuoka Airport No.7
-        (<a href="https://www.google.com/maps/search/?api=1&query=SOTEL+Fukuoka+Airport+No.7" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：13 383 288*20</div>
-      </div>
-      <div class="item">
-        <span class="time-label">17:10</span> （還沒預約的燒肉店）吃燒肉
-      </div>
-      
-      <div class="item">
-        <span class="time-label">19:00</span> 福岡塔
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E3%82%BF%E3%83%AF%E3%83%BC" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：13 312 733*75</div>
-      </div>
-      <div class="item">
-        <span class="time-label">20:00</span> 24 小時超市 TRIALsmart KASUYA
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E3%83%88%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%AB+%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E7%B2%95%E5%B1%8B" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：13 383 685*27</div>
-        <div class="note">
-          ⭐ 到時候再看有沒有要採買什麼 </div>
-      </div>
-      <div class="item">
-        <span class="time-label">20:30</span> 回到 SOTEL Fukuoka Airport No.7
-        <div class="mapcode">MAPCODE：13 383 288*20</div>
+  <!-- D3 天氣：湯布院 -->
+  <div class="weather-widget" data-lat="33.260" data-lon="131.350">
+    <span>🌤️ 湯布院天氣：<span class="w-temp">--</span>°C <span class="w-desc"></span></span>
+    <button class="weather-btn" onclick="getWeather(this)">更新</button>
+  </div>
+
+  <div class="timeline-container">
+    
+    <div class="timeline-item">
+      <div class="time-box">09:00</div>
+      <div class="content-card">
+        <h4>出發：別邸 安</h4>
+        <div class="drive-info">🚙 往 湯布院：約 25–30 分鐘</div>
       </div>
     </div>
-</div>
 
-<div id="day4" class="page" style="display:none;">
-    <div class="card">
-      <div class="card-title">⛩ Day 4 — 太宰府＋鳥栖 Outlet＋大名聖誕市集</div>
-
-      <div class="item">
-        <span class="time-label">09:00</span> 出發：SOTEL Fukuoka Airport No.7
-        (<a href="https://www.google.com/maps/search/?api=1&query=SOTEL+Fukuoka+Airport+No.7" target="_blank">Map</a>)
-      </div>
-      <div class="item">
-        <span class="time-label">09:30</span> 太宰府天滿宮
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%AA%E5%AE%B0%E5%BA%9C%E5%A4%A9%E6%BA%80%E5%AE%AE" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：55 364 163</div>
-      </div>
-      <div class="item">
-        <span class="time-label">11:30</span> 鳥栖 Premium Outlets 鳥棲精品暢貨中心
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E9%B3%A5%E6%A0%96+Premium+Outlets" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：37 856 350*05</div>
-        <div class="note">
-          ⭐ 在此解決午餐，最晚不要逛超過五點 </div>
-      </div>
-      
-      <div class="item">
-        <span class="time-label">18:00</span> 聖誕市集（福岡大名花園城市）
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E5%A4%A7%E5%90%8D%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%82%B7%E3%83%86%E3%82%A3" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：13 317 319*16</div>
-      </div>
-      <div class="item">
-        <span class="time-label">20:00</span> 回到 SOTEL Fukuoka Airport No.7
-        <div class="mapcode">MAPCODE：13 383 288*20</div>
-      </div>
-      <div class="item">
-        <span class="time-label">20:30</span> 24 小時超市 TRIALsmart KASUYA 再補貨
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E3%83%88%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%AB+%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E7%B2%95%E5%B1%8B" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：13 383 685*27</div>
+    <div class="timeline-item">
+      <div class="time-box">09:36</div>
+      <div class="content-card">
+        <h4>Times 停車場 – 湯布院金鱗湖</h4>
+        <div class="mapcode">MAPCODE：269 359 614*42</div>
+        <div class="note">⭐ 車停這，走路逛商店街</div>
       </div>
     </div>
-</div>
 
-<div id="day5" class="page" style="display:none;">
-    <div class="card">
-      <div class="card-title">🏡 Day 5 — 福岡市區散策＋還車返家</div>
-
-      <div class="item">
-        <span class="time-label">10:30</span> 出發：SOTEL Fukuoka Airport No.7
-        (<a href="https://www.google.com/maps/search/?api=1&query=SOTEL+Fukuoka+Airport+No.7" target="_blank">Map</a>)
-      </div>
-      <div class="item">
-        <span class="time-label">10:44</span> 櫛田神社
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E6%AB%9B%E7%94%B0%E7%A5%9E%E7%A4%BE" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：13 319 676*23</div>
-      </div>
-      <div class="item">
-        <span class="time-label">11:58</span> 一蘭拉麵 本社總本店（中洲）
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%80%E8%98%AD+%E6%9C%AC%E7%A4%BE%E7%B7%8F%E6%9C%AC%E5%BA%97+%E4%B8%AD%E6%B4%B2" target="_blank">Map</a>)
-      <div class="mapcode">MAPCODE：13 318 715*22</div>
-      </div>
-      <div class="item">
-        <span class="time-label">13:13</span> 藍瓶咖啡 福岡天神店
-        (<a href="https://www.google.com/maps/search/?api=1&query=Blue+Bottle+Coffee+Fukuoka+Tenjin" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：13 318 067*20</div>
-      </div>
-      
-      <div class="item">
-        <span class="time-label">16:00</span> Budget（還車）
-        (<a href="https://www.google.com/maps/search/?api=1&query=Budget+Rent+a+Car+Fukuoka+Airport" target="_blank">Map</a>)
-        <div class="mapcode">MAPCODE：13 354 126*14</div>
-      </div>
-      <div class="item">
-        <span class="time-label">17:00</span> 抵達 福岡國際機場 T1，辦理報到、逛免稅店
-        (<a href="https://www.google.com/maps/search/?api=1&query=Fukuoka+Airport" target="_blank">Map</a>)
-      </div>
-      <div class="item">
-        <span class="time-label">20:35</span> 華航 CI117 起飛（福岡 → 桃園 T2）</div>
-      <div class="item">
-        <span class="time-label">22:20</span> 抵達 桃園國際機場 T2
-        (<a href="https://www.google.com/maps/search/?api=1&query=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4" target="_blank">Map</a>)
+    <div class="timeline-item">
+      <div class="time-box">10:40</div>
+      <div class="content-card">
+        <h4>天祖神社 & 金鱗湖</h4>
+        <div class="note">拍照點</div>
       </div>
     </div>
-</div>
 
-<div id="expense" class="page" style="display:none;">
-    <div id="expense-tracker">
-        <h2>💸 旅遊收支紀錄 (日圓)</h2>
+    <div class="timeline-item">
+      <div class="time-box">13:21</div>
+      <div class="content-card">
+        <h4>B-SPEAK 蛋糕卷</h4>
+        <div class="note">必吃甜點</div>
+      </div>
+    </div>
 
-        <div class="input-form">
-            <input type="date" id="expense-date" value="2025-12-17">
-            <select id="expense-type">
-                <option value="expense">支出 (Expense)</option>
-                <option value="income">收入 (Income)</option>
-            </select>
-            <input type="text" id="expense-item" placeholder="項目 (例如: 虎航機票、換匯)" required>
-            <input type="number" id="expense-amount" placeholder="金額 (日圓)" min="1" required>
-            <input type="text" id="expense-note" placeholder="說明/備註 (選填)"> 
-            
-            <input type="hidden" id="data-editing-id" value=""> 
-            
-            <div class="input-actions">
-                <button id="add-expense-btn" onclick="addOrUpdateExpense()">新增紀錄</button>
-                <button id="save-expense-btn" onclick="addOrUpdateExpense()">儲存修改</button>
-            </div>
+    <div class="timeline-item">
+      <div class="time-box">13:32</div>
+      <div class="content-card">
+        <h4>湯之坪街道</h4>
+        <div class="drive-info">
+          🚙 往 福岡民宿：高速約 1.5 小時
         </div>
-
-        <table id="expense-table">
-            <thead>
-                <tr>
-                    <th>日期</th>
-                    <th>類型</th>
-                    <th style="width: 25%;">項目</th>
-                    <th>金額 (日圓)</th>
-                    <th>說明/備註</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody id="expense-body">
-                </tbody>
-            <tfoot>
-                <tr id="total-summary-row">
-                    <td colspan="3"><strong>收入總計 (Income)</strong></td>
-                    <td id="total-income">0</td>
-                    <td colspan="2"></td> 
-                </tr>
-                <tr id="total-summary-row">
-                    <td colspan="3"><strong>支出總計 (Expense)</strong></td>
-                    <td id="total-expense">0</td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr id="balance-row">
-                    <td colspan="3"><strong>餘額 (Balance)</strong></td>
-                    <td id="total-balance" class="balance-positive">0</td>
-                    <td colspan="2"></td>
-                </tr>
-            </tfoot>
-        </table>
-        <p class="note" style="margin-top: 15px;">
-            ✅ **資料已連接 Google 試算表。** 所有同行者都能看到同步更新的費用紀錄！
-        </p>
+      </div>
     </div>
+
+    <div class="timeline-item">
+      <div class="time-box">16:00</div>
+      <div class="content-card">
+        <h4>Check-in：SOTEL Fukuoka Airport</h4>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=SOTEL+Fukuoka+Airport+No.7" target="_blank">地圖連結</a></p>
+        <div class="mapcode">MAPCODE：13 383 288*84</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">18:00</div>
+      <div class="content-card">
+        <h4>焼肉 にく田 天神/赤坂 NIKUDEN</h4>
+        <div class="note">‼️ 已預約，待確認</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">20:30</div>
+      <div class="content-card">
+        <h4>天神中央公園 (聖誕市集)</h4>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Day 4 -->
+<div id="day4" class="page" style="display:none;">
+  <div class="day-header">
+    <span class="day-date">12/20 (六) D4</span>
+    <span class="day-title">⛩ 太宰府＋Outlet＋聖誕市集</span>
+  </div>
+
+  <!-- D4 天氣：太宰府/福岡 -->
+  <div class="weather-widget" data-lat="33.515" data-lon="130.530">
+    <span>🌤️ 太宰府天氣：<span class="w-temp">--</span>°C <span class="w-desc"></span></span>
+    <button class="weather-btn" onclick="getWeather(this)">更新</button>
+  </div>
+
+  <div class="timeline-container">
+    
+    <div class="timeline-item">
+      <div class="time-box">09:00</div>
+      <div class="content-card">
+        <h4>出發：SOTEL</h4>
+        <div class="drive-info">🚙 往 太宰府：約 20–30 分鐘</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">09:30</div>
+      <div class="content-card">
+        <h4>太宰府天滿宮</h4>
+        <div class="mapcode">MAPCODE：55 364 073*24</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">11:30</div>
+      <div class="content-card">
+        <h4>鳥栖 Premium Outlets</h4>
+        <div class="mapcode">MAPCODE：37 856 380*68</div>
+        <div class="drive-info">🚙 往 福岡大名：約 30–40 分鐘</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">18:00</div>
+      <div class="content-card">
+        <h4>聖誕市集（福岡大名花園城市）</h4>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">20:30</div>
+      <div class="content-card">
+        <h4>TRIALsmart KASUYA (24H超市)</h4>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Day 5 -->
+<div id="day5" class="page" style="display:none;">
+  <div class="day-header">
+    <span class="day-date">12/21 (日) D5</span>
+    <span class="day-title">🏡 福岡市區＋還車返家</span>
+  </div>
+
+  <!-- D5 天氣：福岡 -->
+  <div class="weather-widget" data-lat="33.590" data-lon="130.401">
+    <span>🌤️ 福岡天氣：<span class="w-temp">--</span>°C <span class="w-desc"></span></span>
+    <button class="weather-btn" onclick="getWeather(this)">更新</button>
+  </div>
+
+  <div class="timeline-container">
+    
+    <div class="timeline-item">
+      <div class="time-box">10:00</div>
+      <div class="content-card">
+        <h4>出發：SOTEL</h4>
+        <div class="drive-info">🚙 往 櫛田神社：約 20 分鐘</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">10:30</div>
+      <div class="content-card">
+        <h4>櫛田神社</h4>
+        <div class="mapcode">MAPCODE：13 319 706*83</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">11:38</div>
+      <div class="content-card">
+        <h4>一蘭拉麵 本社總本店</h4>
+        <div class="mapcode">MAPCODE：13 318 895*82</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">13:13</div>
+      <div class="content-card">
+        <h4>藍瓶咖啡 福岡天神店</h4>
+        <div class="drive-info">🚙 往 Budget：約 25–30 分鐘</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">16:00</div>
+      <div class="content-card">
+        <h4>Budget 還車</h4>
+        <div class="note">⭐ 記得先加滿油再還車</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">17:00</div>
+      <div class="content-card">
+        <h4>抵達 福岡國際機場 T1</h4>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">20:35</div>
+      <div class="content-card">
+        <h4>華航 CI117 起飛 ✈️</h4>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 費用紀錄 -->
+<div id="expense" class="page" style="display:none;">
+  
+  <!-- 匯率計算器 (藍色系) -->
+  <div class="card" id="rate-calculator">
+    <div class="card-title">💳 匯率小幫手</div>
+    
+    <div class="rate-row">
+      <label for="exchange-rate">⚙️ 設定匯率：</label>
+      <input type="number" id="exchange-rate" step="0.0001" value="0.2003" style="width: 80px;">
+    </div>
+    
+    <hr style="border: 0; border-top: 1px dashed #cce4ff; margin: 10px 0;">
+    
+    <div class="rate-row">
+      <div class="rate-input-group">
+        <span>🇯🇵</span>
+        <input type="number" id="calc-jpy" placeholder="日幣金額">
+      </div>
+      <div style="font-weight: bold; color: #666; padding: 0 5px;">=</div>
+      <div class="calc-result">
+        🇹🇼 $<span id="calc-twd">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 記帳本 (綠色系) -->
+  <div class="card" id="expense-tracker">
+    <div class="card-title">💸 旅遊收支紀錄 (日圓)</div>
+    <div class="input-form">
+      <input type="date" id="expense-date" value="2025-12-17">
+      <select id="expense-type">
+        <option value="expense">支出 (Expense)</option>
+        <option value="income">收入 (Income)</option>
+      </select>
+      <input type="text" id="expense-item" placeholder="項目" required>
+      <input type="number" id="expense-amount" placeholder="金額 (日圓)" min="1" required>
+      <input type="text" id="expense-note" placeholder="備註">
+      <input type="hidden" id="data-editing-id" value="">
+      <div class="input-actions" style="width:100%; margin-top:5px;">
+        <button id="add-expense-btn" onclick="addOrUpdateExpense()">新增紀錄</button>
+        <button id="save-expense-btn" onclick="addOrUpdateExpense()" style="display:none; background:#1e88e5;">儲存修改</button>
+      </div>
+    </div>
+    <table id="expense-table" style="width:100%; border-collapse: collapse; font-size:14px;">
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>項目</th>
+          <th>金額</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="expense-body"></tbody>
+      <tfoot>
+        <tr id="balance-row">
+          <td colspan="2" style="text-align:right; font-weight:bold; padding:10px;">總餘額：</td>
+          <td colspan="2" id="total-balance" style="font-weight:bold; font-size:1.2em;">0</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 </div>
 
 <script>
-// ===================================
-// ⭐ 請將此處替換為您剛剛複製的 API URL ⭐
-// ===================================
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwRqznlhB_k0lbAQGz9u3kF0TU_42nFKjmkpAn12wiWBhCsftCkFnMacUG_dATJ5vMa/exec'; 
-
-let expenses = []; 
-let isFetching = false; 
-
-// ===================================
-// 1. GAS 資料同步函式
-// ===================================
-
-async function loadExpenses() {
-    if (isFetching) return;
-    isFetching = true;
-
-    try {
-        const response = await fetch(GAS_API_URL);
-        if (!response.ok) {
-            throw new Error('無法連接到費用資料庫。');
-        }
-        const data = await response.json();
-        expenses = data.map(exp => ({
-            ...exp,
-            amount: parseFloat(exp.amount),
-            note: exp.note || '' 
-        }));
-    } catch (error) {
-        console.error('讀取資料失敗:', error);
-        alert('載入費用紀錄失敗，請檢查網路或 API 部署狀態。');
-    } finally {
-        isFetching = false;
-        renderExpenses(); 
-    }
-}
-
-async function syncExpense(data) {
-    try {
-        const response = await fetch(GAS_API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-        
-        const result = await response.json();
-
-        if (result.result === 'success') {
-            await loadExpenses(); 
-            return true;
-        } else {
-            console.error('寫入失敗:', result.message);
-            alert('操作失敗：' + (result.message || '無法將資料儲存到 Google 試算表。'));
-            return false;
-        }
-    } catch (error) {
-        console.error('網路同步失敗:', error);
-        alert('網路同步失敗，請檢查您的網路連線。');
-        return false;
-    }
-}
-
-// ===================================
-// 2. 費用追蹤器主要功能
-// ===================================
-
-async function addOrUpdateExpense() {
-    const date = document.getElementById('expense-date').value;
-    const type = document.getElementById('expense-type').value; 
-    const item = document.getElementById('expense-item').value.trim();
-    const amount = parseFloat(document.getElementById('expense-amount').value);
-    const note = document.getElementById('expense-note').value.trim(); 
-    const editingId = document.getElementById('data-editing-id').value;
-
-    if (!date || !item || isNaN(amount) || amount <= 0) {
-        alert("請檢查：日期、項目、金額必須填寫，且金額需大於 0。");
-        return; 
-    }
-
-    const payload = {
-        date: date,
-        type: type,
-        item: item,
-        amount: amount,
-        note: note, 
-    };
-
-    if (editingId) {
-        payload.action = 'update';
-        payload.id = editingId;
-        
-        const success = await syncExpense(payload);
-        if (success) clearEditMode();
-        
-    } else {
-        payload.action = 'add';
-        payload.id = Date.now().toString(); 
-        
-        await syncExpense(payload);
-    }
-
-    // 清空輸入欄位
-    document.getElementById('expense-type').value = 'expense';
-    document.getElementById('expense-item').value = '';
-    document.getElementById('expense-amount').value = '';
-    document.getElementById('expense-note').value = ''; 
-    document.getElementById('expense-item').focus();
-}
-
-async function deleteExpense(id) {
-    if (!confirm("確定要刪除這筆費用紀錄嗎？\n\n此操作將同步到所有人的紀錄中！")) return;
-
-    const success = await syncExpense({
-        action: 'delete',
-        id: id
-    });
-    
-    if (success && document.getElementById('data-editing-id').value === id) {
-        clearEditMode();
-    }
-}
-
-function editExpense(id) {
-    const expenseToEdit = expenses.find(exp => exp.id.toString() === id.toString());
-    if (!expenseToEdit) return;
-
-    document.getElementById('expense-date').value = expenseToEdit.date;
-    document.getElementById('expense-type').value = expenseToEdit.type; 
-    document.getElementById('expense-item').value = expenseToEdit.item;
-    document.getElementById('expense-amount').value = expenseToEdit.amount;
-    document.getElementById('expense-note').value = expenseToEdit.note; 
-    
-    document.getElementById('data-editing-id').value = id;
-
-    document.getElementById('add-expense-btn').style.display = 'none';
-    document.getElementById('save-expense-btn').style.display = 'inline-block';
-    
-    document.getElementById('expense-item').focus();
-}
-
-function clearEditMode() {
-    document.getElementById('data-editing-id').value = '';
-    document.getElementById('add-expense-btn').style.display = 'inline-block';
-    document.getElementById('save-expense-btn').style.display = 'none';
-    
-    document.getElementById('expense-type').value = 'expense';
-    document.getElementById('expense-item').value = '';
-    document.getElementById('expense-amount').value = '';
-    document.getElementById('expense-note').value = '';
-}
-
-function renderExpenses() {
-    const expenseBody = document.getElementById('expense-body');
-    expenseBody.innerHTML = ''; 
-    
-    let totalIncome = 0;
-    let totalExpense = 0;
-
-    expenses.forEach(exp => {
-        const newRow = expenseBody.insertRow();
-        
-        newRow.insertCell(0).textContent = exp.date;
-        
-        const typeCell = newRow.insertCell(1);
-        typeCell.textContent = exp.type === 'income' ? '收入' : '支出';
-        typeCell.className = exp.type === 'income' ? 'type-income' : 'type-expense';
-
-        newRow.insertCell(2).textContent = exp.item;
-        
-        const amountCell = newRow.insertCell(3);
-        amountCell.textContent = exp.amount.toLocaleString('en-US'); 
-        
-        // 欄位 5: 說明/備註
-        newRow.insertCell(4).textContent = exp.note;
-        
-        if (exp.type === 'income') {
-            totalIncome += exp.amount;
-        } else {
-            totalExpense += exp.amount;
-        }
-
-        // 欄位 6: 操作欄位 (索引 5)
-        const actionCell = newRow.insertCell(5); 
-        
-        const editButton = document.createElement('button');
-        editButton.textContent = '編輯';
-        editButton.className = 'edit-btn';
-        editButton.onclick = () => editExpense(exp.id.toString()); 
-        actionCell.appendChild(editButton);
-
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = '刪除';
-        deleteButton.onclick = () => deleteExpense(exp.id.toString()); 
-        actionCell.appendChild(deleteButton);
-    });
-
-    calculateBalance(totalIncome, totalExpense);
-}
-
-function calculateBalance(totalIncome, totalExpense) {
-    const totalBalance = totalIncome - totalExpense;
-
-    const incomeStr = totalIncome.toLocaleString('en-US');
-    const expenseStr = totalExpense.toLocaleString('en-US');
-    const balanceStr = totalBalance.toLocaleString('en-US');
-
-    document.getElementById('total-income').textContent = incomeStr;
-    document.getElementById('total-expense').textContent = expenseStr;
-    
-    const balanceElement = document.getElementById('total-balance');
-    balanceElement.textContent = balanceStr;
-    
-    balanceElement.classList.remove('balance-positive', 'balance-negative');
-    
-    if (totalBalance >= 0) {
-        balanceElement.classList.add('balance-positive');
-    } else {
-        balanceElement.classList.add('balance-negative');
-    }
-}
-
-
-// ===================================
-// 3. Tab 和初始化
-// ===================================
-
-document.addEventListener('DOMContentLoaded', () => {
-    loadExpenses(); 
-    
-    // Tab 切換功能
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        document.querySelectorAll(".page").forEach(p => p.style.display = "none");
-        document.getElementById(btn.dataset.page).style.display = "block";
-      });
-    });
+// --- 1. 分頁切換 ---
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+    document.getElementById(btn.dataset.page).style.display = "block";
+    window.scrollTo(0, 0);
+  });
 });
-</script>
 
+// --- 2. 天氣功能 (Open-Meteo API) ---
+const weatherCodeMap = {
+  0: "晴朗", 1: "晴時多雲", 2: "多雲", 3: "陰天",
+  45: "起霧", 51: "毛毛雨", 61: "下雨", 63: "大雨", 
+  80: "陣雨", 95: "雷雨"
+};
+
+async function getWeather(btn) {
+  const widget = btn.closest('.weather-widget');
+  const lat = widget.dataset.lat;
+  const lon = widget.dataset.lon;
+  const tempSpan = widget.querySelector('.w-temp');
+  const descSpan = widget.querySelector('.w-desc');
+  
+  btn.textContent = "載入中...";
+  btn.disabled = true;
+
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=Asia%2FTokyo`;
+    const res = await fetch(url);
+    const data = await res.json();
+    
+    if (data.current_weather) {
+      const t = data.current_weather.temperature;
+      const code = data.current_weather.weathercode;
+      const desc = weatherCodeMap[code] || "多雲"; // 預設
+      
+      tempSpan.textContent = t;
+      descSpan.textContent = desc;
+      btn.textContent = "已更新";
+    }
+  } catch (e) {
+    console.error(e);
+    btn.textContent = "失敗";
+  } finally {
+    setTimeout(() => { 
+      btn.disabled = false; 
+      if(btn.textContent === "已更新") btn.textContent = "更新";
+    }, 2000);
+  }
+}
+
+// --- 3. 匯率換算 ---
+const rateInput = document.getElementById('exchange-rate');
+const jpyInput = document.getElementById('calc-jpy');
+const twdOutput = document.getElementById('calc-twd');
+
+function calcRate() {
+  const r = parseFloat(rateInput.value) || 0;
+  const j = parseFloat(jpyInput.value) || 0;
+  twdOutput.textContent = Math.round(j * r).toLocaleString('en-US');
+  localStorage.setItem('fukuoka_rate', r);
+}
+rateInput.addEventListener('input', calcRate);
+jpyInput.addEventListener('input', calcRate);
+
+// --- 4. 記帳功能 ---
+let expenses = JSON.parse(localStorage.getItem('fukuoka_expenses')) || [];
+
+function saveRender() {
+  localStorage.setItem('fukuoka_expenses', JSON.stringify(expenses));
+  const tbody = document.getElementById('expense-body');
+  tbody.innerHTML = '';
+  let total = 0;
+  
+  // 按日期排序 (新到舊)
+  expenses.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+  expenses.forEach(exp => {
+    const isInc = exp.type === 'income';
+    const val = parseFloat(exp.amount);
+    if(isInc) total += val; else total -= val;
+    
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${exp.date.substring(5)}</td>
+      <td>
+        <div style="font-weight:bold">${exp.item}</div>
+        <div style="font-size:12px;color:#888">${exp.note || ''}</div>
+      </td>
+      <td class="${isInc ? 'type-income' : 'type-expense'}">
+        ${isInc?'+':'-'}${val.toLocaleString()}
+      </td>
+      <td>
+        <button onclick="delExp('${exp.id}')" style="background:#ef5350;color:white;border:none;padding:4px 8px;border-radius:4px;">×</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+  
+  const balEl = document.getElementById('total-balance');
+  balEl.textContent = total.toLocaleString();
+  balEl.style.color = total >= 0 ? '#2e7d32' : '#c62828';
+}
+
+function addOrUpdateExpense() {
+  const date = document.getElementById('expense-date').value;
+  const type = document.getElementById('expense-type').value;
+  const item = document.getElementById('expense-item').value;
+  const amount = document.getElementById('expense-amount').value;
+  const note = document.getElementById('expense-note').value;
+  
+  if(!item || !amount) return alert("請輸入項目與金額");
+
+  expenses.push({
+    id: Date.now().toString(),
+    date, type, item, amount, note
+  });
+
+  document.getElementById('expense-item').value = '';
+  document.getElementById('expense-amount').value = '';
+  document.getElementById('expense-note').value = '';
+  saveRender();
+}
+
+function delExp(id) {
+  if(confirm("確定刪除?")) {
+    expenses = expenses.filter(e => e.id !== id);
+    saveRender();
+  }
+}
+
+// 初始化
+window.onload = function() {
+  const savedRate = localStorage.getItem('fukuoka_rate');
+  if(savedRate) rateInput.value = savedRate;
+  saveRender();
+}
+</script>
 </body>
 </html>
+
+
