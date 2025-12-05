@@ -175,14 +175,16 @@ a:hover {
   white-space: nowrap;
 }
 
-  /* 費用追蹤器 */
+
+/* 費用追蹤器 */
 #expense-tracker {
   margin: 14px;
   padding: 16px;
-  border: 1px solid var(--accent-border);
+  border: 1px solid rgba(188, 204, 196, 0.35);  /* 還是搭配莫蘭迪綠灰，但比較淡 */
   border-radius: 18px;
-  background-color: var(--accent-soft);
+  background-color: #fbfaf8;                    /* 比匯率小幫手淺、偏米白 */
 }
+
 .input-form {
   display: flex;
   flex-wrap: wrap;
@@ -198,13 +200,8 @@ a:hover {
   border-radius: 6px;
   box-sizing: border-box;
   min-width: 100px;
-  background-color: #fbfaf8;
+  background-color: #ffffff; /* 收支表單改成純白，對比比較清楚 */
 }
-#expense-date { order: 1; }
-#expense-type { order: 2; }
-#expense-item { order: 3; }
-#expense-amount { order: 4; }
-#expense-note { order: 5; }
 .input-actions {
   order: 6;
   display: flex;
@@ -224,6 +221,7 @@ a:hover {
 .input-form button:hover {
   opacity: 0.92;
 }
+  
 #add-expense-btn { background-color: #4CAF50; }
 #save-expense-btn { background-color: #007bff; display: none; }
 
