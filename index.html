@@ -11,7 +11,7 @@
   --accent: rgb(188, 204, 196);               /* #BCCCC4 */
   --accent-soft: rgba(188, 204, 196, 0.18);   /* 卡片／區塊淡底 */
   --accent-border: rgba(188, 204, 196, 0.45); /* 邊框 */
-  --accent-strong: rgb(104, 120, 113);        /* 深字色，高級感一點 */
+  --accent-strong: rgb(104, 120, 113);        /* 深字色 */
 
   /* 背景與文字 */
   --bg-body: #f6f4f1;         /* 全頁米白 */
@@ -31,12 +31,12 @@ body {
   color: var(--text-main);
 }
 
-/* Tab 切換列（你的選擇：B 款 → 超淡莫蘭迪綠灰） */
+/* Tab 切換列：底色白色 */
 .tab-bar {
   display: flex;
   position: sticky;
   top: 0;
-  background: rgba(188, 204, 196, 0.12);  /* B：幾乎白，但帶莫蘭迪氣息 */
+  background: #ffffff;
   padding: 10px 0;
   border-bottom: 1px solid rgba(0,0,0,0.06);
   z-index: 10;
@@ -175,7 +175,7 @@ a:hover {
   white-space: nowrap;
 }
 
-/* 費用追蹤器 */
+  /* 費用追蹤器 */
 #expense-tracker {
   margin: 14px;
   padding: 16px;
@@ -364,7 +364,7 @@ a:hover {
   display: inline-block;
 }
 .drive-info strong { font-weight: 700; }
-  <style>
+</style>
 </head>
 
 <body>
@@ -428,7 +428,6 @@ a:hover {
   </div>
 </div>
 
-  
 <div id="day1" class="page" style="display:none;">
   <div class="day-header"><span class="day-date">12/17 (三) </span><span class="day-title">🚗 福岡 → 別府</span></div>
   <div class="timeline-container">
@@ -436,7 +435,7 @@ a:hover {
       <div class="time-box">10:00</div>
       <div class="content-card">
         <h4>抵達 福岡國際機場</h4>
-        <div class="note">⭐ 到國際航廈1樓的租車櫃檯先報到，會有接驟車去租車店</div>
+        <div class="note">⭐ 到國際航廈1樓的租車櫃檯先報到，會有接駁車去租車店</div>
       </div>
     </div>
     <div class="timeline-item">
@@ -818,6 +817,7 @@ a:hover {
 
   </div>
 </div>
+
 <div id="day4" class="page" style="display:none;">
   <div class="day-header">
     <span class="day-date">12/20 (六) </span>
@@ -914,6 +914,7 @@ a:hover {
 
   </div>
 </div>
+
 <div id="day5" class="page" style="display:none;">
   <div class="day-header"><span class="day-date">12/21 (日) </span><span class="day-title">🏡 福岡市區小景點 → 回台灣 </span></div>
   <div class="timeline-container">
@@ -1018,6 +1019,7 @@ a:hover {
 
   </div>
 </div>
+
 <div id="expense" class="page" style="display:none;">
   <div class="card" id="rate-calculator">
     <div class="card-title">💳 匯率小幫手</div>
