@@ -362,10 +362,59 @@ a:hover {
   display: inline-block;
 }
 .drive-info strong { font-weight: 700; }
+
+  /* --- 頁首 Banner --- */
+.top-banner {
+  position: relative;
+  width: 100%;
+  height: 180px; /* 想更高可調整 */
+  background-image: url('https://images.unsplash.com/photo-1549692520-acc6669e2f0c?q=80&w=1920'); /* 你之後可以換成自己的照片 */
+  background-size: cover;
+  background-position: center;
+  border-radius: 0 0 18px 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* 半透明遮罩（讓字可讀） */
+.banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+}
+
+/* 文字區塊 */
+.banner-text {
+  position: absolute;
+  bottom: 18px;
+  left: 20px;
+  color: #fff;
+}
+
+.banner-text h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.banner-text p {
+  margin: 3px 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+  
 </style>
 </head>
 
 <body>
+<div class="top-banner">
+  <div class="banner-overlay"></div>
+  <div class="banner-text">
+    <h1>2025 懶豬的福岡之旅</h1>
+    <p>12/17 — 12/21｜Family Trip ✈️🚗</p>
+  </div>
+</div>
+  
 <div class="tab-bar">
   <div class="tab-btn active" data-page="prep">行前準備</div>
   <div class="tab-btn" data-page="day1">D1</div>
