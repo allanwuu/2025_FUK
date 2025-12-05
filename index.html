@@ -4,15 +4,18 @@
 <meta charset="UTF-8">
 <title>2025懶豬的福岡之旅</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-/* 色調說明：
-   主色調 (原本的粉紅) 改為 RGB(188, 204, 196) => Hex #BCCAC4
-   為了文字閱讀清晰，文字顏色使用該色調的加深版 #6b8c82
-*/
+:root {
+  --main-color: rgb(188, 204, 196);               /* 主色 */
+  --main-color-soft: rgba(188, 204, 196, 0.18);   /* 淺底 */
+  --main-color-border: rgba(188, 204, 196, 0.45); /* 邊框 */
+  --main-color-strong: rgba(118, 132, 126, 1);    /* 深字色（更好看）*/
+}
 
 body {
   margin: 0;
-  background: #fdfdfd; /* 背景微調更乾淨 */
+  background: #fdfcff;
   font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", sans-serif;
   color: #333;
 }
@@ -34,44 +37,15 @@ body {
   padding: 10px 0;
   font-size: 15px;
   font-weight: 600;
-  color: #888; /* 未選中顏色變淡一點 */
+  color: #666;
   border-bottom: 3px solid transparent;
   cursor: pointer;
   white-space: nowrap;
   min-width: 60px;
 }
 .tab-btn.active {
-  color: #5d7e73; /* 深綠色文字 */
-  border-bottom: 3px solid #bccac4; /* 指定的 RGB(188,204,196) */
-}
-
-/* 天氣小工具樣式 (藍色系) */
-.weather-widget {
-  margin: 0 14px 10px 14px;
-  padding: 10px 15px;
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: #0369a1;
-  font-weight: bold;
-  font-size: 14px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-.weather-btn {
-  background: #0ea5e9;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.weather-btn:active {
-  background: #0284c7;
+  color: var(--main-color-strong);
+  border-bottom: 3px solid var(--main-color);
 }
 
 /* 卡片通用樣式 */
@@ -80,8 +54,7 @@ body {
   margin: 14px;
   padding: 16px;
   border-radius: 18px;
-  /* 陰影改為綠色系淡淡的陰影 */
-  box-shadow: 0 4px 12px rgba(188, 204, 196, 0.4); 
+  box-shadow: 0 4px 12px rgba(188, 204, 196, 0.25);
 }
 .card-title {
   font-size: 17px;
@@ -96,6 +69,7 @@ body {
   font-size: 14px;
   margin: 4px 0 8px;
 }
+
 .status {
   padding: 2px 10px;
   border-radius: 12px;
@@ -103,15 +77,14 @@ body {
   margin-left: auto;
   font-weight: bold;
 }
-.status-red { background: #ffdddd; color: #c00; }
-.status-yellow { background: #fff2c2; color: #c98b00; }
-.status-green { background: #d9ffd9; color: #0a8f00; }
+.status-red { background: #ffd8d8; color: #a00; }
+.status-yellow { background: #fff4cf; color: #8a6d00; }
+.status-green { background: #d9f7d9; color: #0a8f00; }
 
 .section-title {
   font-weight: bold;
   margin: 10px 0 6px;
   font-size: 15px;
-  color: #5d7e73; /* 深綠色 */
 }
 .item {
   padding: 6px 0;
@@ -121,7 +94,7 @@ body {
   display: inline-block;
   width: 3.8em;
   font-weight: 700;
-  color: #6b8c82; /* 深綠色 */
+  color: var(--main-color-strong);
 }
 .mapcode {
   font-size: 12px;
@@ -131,24 +104,15 @@ body {
   font-size: 12px;
   color: #666;
 }
-a {
-  color: #4a7a8c; /* 連結改為偏藍綠色 */
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
 
-/* 匯率換算器 (維持藍色系) */
+/* 匯率換算器 */
 #rate-calculator {
-  background: #f0f7ff;
-  border: 1px solid #cce4ff;
-  box-shadow: none; /* 去掉陰影讓它平整一點 */
+  background: var(--main-color-soft);
+  border: 1px solid var(--main-color-border);
 }
 #rate-calculator .card-title {
-  font-size: 24px; 
-  margin-bottom: 15px; 
-  color: #0369a1;
+  font-size: 24px;
+  margin-bottom: 15px;
 }
 .rate-row {
   display: flex;
@@ -165,7 +129,7 @@ a:hover {
 }
 .rate-input-group input {
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--main-color-border);
   border-radius: 6px;
   font-size: 16px;
   width: 100%;
@@ -173,18 +137,18 @@ a:hover {
 .calc-result {
   font-size: 20px;
   font-weight: 900;
-  color: #0a8f00;
+  color: var(--main-color-strong);
   margin-left: auto;
   white-space: nowrap;
 }
 
-/* 費用追蹤器 (改為綠色系) */
+/* 費用追蹤器 */
 #expense-tracker {
   margin: 14px;
   padding: 16px;
-  border: 1px solid #bccac4; /* RGB(188,204,196) */
+  border: 1px solid var(--main-color-border);
   border-radius: 18px;
-  background-color: #f6f8f7; /* 極淡的綠色背景 */
+  background-color: var(--main-color-soft);
 }
 .input-form {
   display: flex;
@@ -197,37 +161,26 @@ a:hover {
 .input-form select {
   flex-grow: 1;
   padding: 10px;
-  border: 1px solid #bccac4;
+  border: 1px solid var(--main-color-border);
   border-radius: 4px;
-  box-sizing: border-box;
   min-width: 100px;
 }
-#expense-date { order: 1; }
-#expense-type { order: 2; }
-#expense-item { order: 3; }
-#expense-amount { order: 4; }
-#expense-note { order: 5; }
 .input-actions {
   order: 6;
   display: flex;
   gap: 10px;
   flex-grow: 1;
 }
-.input-actions button {
-  flex: 1;
-  min-width: 80px;
-}
 .input-form button {
   padding: 10px 15px;
-  background-color: #7d9a8e; /* 按鈕深綠色 */
+  background-color: var(--main-color);
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.2s;
 }
-#add-expense-btn { background-color: #5d7e73; }
+#add-expense-btn { background-color: #4CAF50; }
 #save-expense-btn { background-color: #007bff; display: none; }
 
 #expense-table {
@@ -235,22 +188,19 @@ a:hover {
   border-collapse: collapse;
 }
 #expense-table th, #expense-table td {
-  border: 1px solid #dce4e0;
+  border: 1px solid var(--main-color-border);
   padding: 10px;
   text-align: left;
   font-size: 14px;
 }
+#expense-table th {
+  background-color: var(--main-color-soft);
+  font-weight: bold;
+}
 #expense-table td:last-child {
   white-space: nowrap;
 }
-#expense-table th:nth-child(4) {
-  width: 25%;
-}
-#expense-table th {
-  background-color: #bccac4; /* RGB(188,204,196) */
-  color: white; /* 標題字改白 */
-  font-weight: bold;
-}
+
 #total-summary-row td {
   background-color: #f7f7f7;
   font-weight: bold;
@@ -263,19 +213,6 @@ a:hover {
 }
 .balance-positive { color: #0a8f00; }
 .balance-negative { color: #c00; }
-#expense-body button {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 5px 8px;
-  cursor: pointer;
-  border-radius: 3px;
-  font-size: 12px;
-  margin-right: 5px;
-}
-#expense-body button.edit-btn { background-color: #ff9800; }
-.type-income { color: #0a8f00; font-weight: bold; }
-.type-expense { color: #c00; font-weight: bold; }
 
 /* 行程時間軸 */
 .day-header {
@@ -290,7 +227,7 @@ a:hover {
 .day-date {
   font-size: 22px;
   font-weight: 900;
-  color: #6b8c82; /* 深綠色 */
+  color: var(--main-color-strong);
   margin-right: 8px;
 }
 .day-title {
@@ -299,6 +236,7 @@ a:hover {
   font-weight: 600;
   color: #555;
 }
+
 .timeline-container {
   margin: 0 14px;
   padding: 10px 0 20px;
@@ -310,28 +248,29 @@ a:hover {
   margin-bottom: 15px;
 }
 .time-box {
-  min-width: 80px;
-  max-width: 80px;
+  min-width: 60px;
+  max-width: 60px;
   border-radius: 12px;
-  border: 1px solid #bccac4; /* 綠色邊框 */
-  background: #f1f5f3; /* 淡綠背景 */
+  border: 1px solid var(--main-color-border);
+  background: var(--main-color-soft);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
   font-size: 14px;
-  color: #5d7e73; /* 深綠文字 */
+  color: var(--main-color-strong);
   box-shadow: 0 3px 6px rgba(188, 204, 196, 0.4);
 }
 .timeline-item .time-label {
   display: none;
 }
+
 .content-card {
   flex: 1;
   background: white;
   padding: 12px 14px;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
   border: 1px solid #eee;
 }
 .content-card h4 {
@@ -355,19 +294,17 @@ a:hover {
 .content-card .note {
   border-top: none;
 }
+
 /* 車程小卡 */
 .drive-info {
   margin-top: 6px;
   padding: 6px 10px;
   font-size: 12px;
   color: #555;
-  background: #fffbe5; /* 維持一點黃色調提示感，或是改淡灰綠 */
-  background: #f4f6f5; 
+  background: #fff8e5;
   border-radius: 8px;
-  border: 1px solid #dce4e0;
-  display: inline-block;
+  border: 1px solid #ffe0aa;
 }
-.drive-info strong { font-weight: 700; color: #5d7e73; }
 </style>
 </head>
 
@@ -406,8 +343,10 @@ a:hover {
    <div class="item">💰 費用老吳先付，後續以台幣請款</div>
  </div>
   <div class="card">
-    <div class="card-title">🚌 機場接送 <span class="status status-red">尚未預約</span></div>
-    <div class="item"> 🧑‍🧑‍🧒‍🧒吳家、王家 </div><br>
+    <div class="card-title">🚌 機場接送 <span class="status status-green">已預約</span></div>
+    <div class="item"> 🧑‍🧑‍🧒‍🧒 吳家、王家 </div>
+    <div class="item"> 💰 費用單程1500+汽座100，吳家1700、王家1500 </div><br>
+    
     <div class="section-title">（去程）預約機場接送</div>
     <div class="item">⏰ 出發時間：2025/12/17 凌晨04:30</div>
     <div class="item">🏠 家裡 → 桃園機場 T1</div><br>
@@ -430,15 +369,9 @@ a:hover {
   </div>
 </div>
 
+  
 <div id="day1" class="page" style="display:none;">
   <div class="day-header"><span class="day-date">12/17 (三) D1</span><span class="day-title">🚗 桃園 → 福岡 → 別府</span></div>
-  
-  <!-- 新增：D1 天氣 (別府) -->
-  <div class="weather-widget" data-lat="33.279" data-lon="131.500">
-    <span>🌤️ 別府天氣：<span class="w-temp">--</span>°C <span class="w-desc"></span></span>
-    <button class="weather-btn" onclick="getWeather(this)">更新天氣</button>
-  </div>
-
   <div class="timeline-container">
     <div class="timeline-item">
       <div class="time-box">10:00</div>
@@ -452,9 +385,9 @@ a:hover {
       <div class="content-card">
         <h4>バジェット･レンタカー 福岡空港店</h4>
         <p><a href="https://www.google.com/maps/search/?api=1&query=Budget+Rent+a+Car+Fukuoka+Airport" target="_blank">地圖連結</a></p>
-        <div class="mapcode">MAPCODE：13 354 156*17</div>
+        <div class="mapcode">📍 MAPCODE：13 354 156*17</div>
         <div class="drive-info">
-          🚙✨ <strong>福岡機場 → LaLaport 福岡</strong><br>
+          🚙✨ <strong>福岡機場租車店 → LaLaport 福岡</strong><br>
           約 6–8 公里、15–20 分鐘<br>
           🛣 市區道路 ＋ 主要幹道
         </div>
@@ -465,7 +398,7 @@ a:hover {
       <div class="content-card">
         <h4>LaLaport 福岡</h4>
         <p><a href="https://www.google.com/maps/search/?api=1&query=LaLaport+Fukuoka" target="_blank">地圖連結</a></p>
-        <div class="mapcode">MAPCODE：13 233 182*28</div>
+        <div class="mapcode">📍 MAPCODE：13 233 182*28</div>
         <div class="note">⭐ 預計停留2小時，最晚3點離開</div>
         <div class="drive-info">
           🚙✨ <strong>LaLaport → 別邸 安（別府）</strong><br>
@@ -480,7 +413,7 @@ a:hover {
       <div class="content-card">
         <h4>抵達・Check-in：別邸 安</h4>
         <p><a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E9%82%B8+%E5%AE%89" target="_blank">地圖連結</a></p>
-        <div class="mapcode">MAPCODE：46 404 667*36</div>
+        <div class="mapcode">📍 MAPCODE：46 404 667*36</div>
         <div class="note">⭐ 放東西休息一下而已，不要太久!!!!!!</div>
         <div class="drive-info">
           🚙✨ <strong>別邸 安 → 餐廳（東洋軒／胡月）</strong><br>
@@ -494,13 +427,11 @@ a:hover {
       <div class="time-box">19:00</div>
       <div class="content-card">
         <h4>晚餐🥣雞肉天婦羅始祖 東洋軒 或是 胡月冷麵</h4>
-        <p>東洋軒 
+        <p>東洋軒 📍 MAPCODE：46 465 637*22 
           <a href="https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E6%B4%8B%E8%BB%92+%E9%9B%9E%E8%82%89%E5%A4%A9%E5%A9%86%E7%BE%85" target="_blank">地圖連結</a> 
-          (MAPCODE：46 465 637*22)
         </p>
-        <p>胡月冷麵 
+        <p>胡月冷麵 📍 MAPCODE：46 465 816*50
           <a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E5%BA%9C+%E8%83%A1%E6%9C%88%E5%86%B7%E9%BA%B5" target="_blank">地圖連結</a> 
-          (MAPCODE：46 465 816*50)
         </p>
         <div class="drive-info">
           🚙✨ <strong>餐廳 → 別府塔</strong><br>
@@ -514,7 +445,7 @@ a:hover {
       <div class="content-card">
         <h4>別府塔（別府タワー）</h4>
         <p><a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E5%BA%9C%E3%82%BF%E3%83%AF%E3%83%BC" target="_blank">地圖連結</a></p>
-        <div class="mapcode">MAPCODE：46 406 390*55</div>
+        <div class="mapcode">📍 MAPCODE：46 406 390*55</div>
         <div class="note">⭐ 從冷麵走路就會到了，就在旁邊</div>       
         <div class="drive-info">
           🚙✨ <strong>別府塔 → 別邸 安</strong><br>
@@ -529,6 +460,7 @@ a:hover {
       <div class="content-card">
         <h4>回民宿 別邸 安</h4>
         <p><a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E9%82%B8+%E5%AE%89" target="_blank">地圖連結</a></p>
+        <div class="mapcode">📍 MAPCODE：46 404 667*36</div>
         <div class="drive-info">
           🚙🛒 <strong>別邸 安 → Marushoku 超市</strong><br>
           約 2–3 公里、5–8 分鐘<br>
@@ -542,7 +474,7 @@ a:hover {
       <div class="content-card">
         <h4>民宿附近超市 Marushoku</h4>
         <p><a href="https://www.google.com/maps/search/?api=1&query=%E3%83%9E%E3%83%AB%E3%82%B7%E3%83%A7%E3%82%AF+%E3%82%84%E3%81%BE%E3%81%AA%E3%81%BF%E5%BA%97" target="_blank">地圖連結</a></p>
-        <div class="mapcode">MAPCODE：46 522 175*46</div>
+        <div class="mapcode">📍 MAPCODE：46 522 175*46</div>
         <div class="note">⭐ 要記得買和牛跟泡麵</div>        
       </div>
     </div>
@@ -550,51 +482,128 @@ a:hover {
   </div>
 </div>
 
-  
 <div id="day2" class="page" style="display:none;">
   <div class="day-header"><span class="day-date">12/18 (四) D2</span><span class="day-title">🦁 九州自然動物園 & 別府美食</span></div>
-  
-  <!-- 新增：D2 天氣 (別府) -->
-  <div class="weather-widget" data-lat="33.279" data-lon="131.500">
-    <span>🌤️ 別府天氣：<span class="w-temp">--</span>°C <span class="w-desc"></span></span>
-    <button class="weather-btn" onclick="getWeather(this)">更新天氣</button>
-  </div>
-
   <div class="timeline-container">
-    <div class="timeline-item"><div class="time-box">08:30</div>
-      <div class="content-card"><h4>出發：別邸 安</h4><div class="drive-info">🚙✨ <strong>別邸 安 → 九州自然動物園</strong><br>大約 25–35 分鐘，17–20 公里🦁</div></div></div>
+
+    <div class="timeline-item">
+      <div class="time-box">08:30</div>
+      <div class="content-card">
+        <h4>出發：別邸 安</h4>
+        <div class="drive-info">
+          🚙✨ <strong>別邸 安 → 九州自然動物園</strong><br>
+          約 17–20 公里、25–35 分鐘<br>
+          🛣 市區道路 → 県道11號（主要道路）
+        </div>
+      </div>
+    </div>
+
     <div class="timeline-item">
       <div class="time-box">09:00</div>
-      <div class="content-card"><h4>九州自然動物園</h4><p><a href="https://www.google.com/maps/search/?api=1&query=%E4%B9%9D%E5%B7%9E%E8%87%AA%E7%84%B6%E5%8B%95%E7%89%A9%E5%9C%92+%E3%82%A2%E3%83%95%E3%83%AA%E3%82%AB%E3%83%B3%E3%82%B5%E3%83%95%E3%82%A1%E3%83%AA" target="_blank">地圖連結</a></p><div class="mapcode">MAPCODE：46 664 168*42</div><div class="note">📅 9:30–15:00（9:00 開放）</div><div class="note">🎫 門票 ¥17,100 (6大1小) / 巴士 ¥10,500</div></div></div>
+      <div class="content-card">
+        <h4>九州自然動物園</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E4%B9%9D%E5%B7%9E%E8%87%AA%E7%84%B6%E5%8B%95%E7%89%A9%E5%9C%92+%E3%82%A2%E3%83%95%E3%83%AA%E3%82%AB%E3%83%B3%E3%82%B5%E3%83%95%E3%82%A1%E3%83%AA" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：46 664 168*42</div>
+        <div class="note">📅 9:30–15:00（9:00 開放）</div>
+        <div class="note">🎫 門票 ¥17,100（6大1小）／ Jungle Bus ¥10,500</div>
+         <div class="drive-info">
+          🚙✨ <strong>動物園 → 岡本屋</strong><br>
+          約 11 公里、15–20 分鐘<br>
+          🛣 県道11號 → 明礬地區山路（緩坡）
+        </div>
+      </div>
+    </div>
+
     <div class="timeline-item">
       <div class="time-box">14:30</div>
-      <div class="content-card"><h4>🍮 地獄蒸布丁 岡本屋</h4><p><a href="https://www.google.com/maps/search/?api=1&query=%E5%B2%A1%E6%9C%AC%E5%B1%8B+%E5%9C%B0%E7%8D%84%E8%92%B8%E5%B8%83%E4%B8%81" target="_blank">地圖連結</a></p><div class="mapcode">MAPCODE：46 519 680*75</div><div class="drive-info">🚙✨ <strong>動物園 → 岡本屋</strong><br>車程大約 15–20分鐘，約 11 公里</div></div></div>
+      <div class="content-card">
+        <h4>🍮 地獄蒸布丁 岡本屋</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E5%B2%A1%E6%9C%AC%E5%B1%8B+%E5%9C%B0%E7%8D%84%E8%92%B8%E5%B8%83%E4%B8%81" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：46 519 680*75</div>
+        <div class="drive-info">
+          🚙✨ <strong>岡本屋 → 鐵輪</strong><br>
+          約 2.5 公里、6–8 分鐘<br>
+          🛣 明礬地區 → 鐵輪地獄周邊道路
+        </div>
+      </div>
+    </div>
+
     <div class="timeline-item">
       <div class="time-box">15:30</div>
-      <div class="content-card"><h4>地獄蒸工房 鐵輪</h4><p><a href="https://www.google.com/maps/search/?api=1&query=%E5%9C%B0%E7%8D%84%E8%92%B8%E5%B7%A5%E6%88%BF+%E9%90%B5%E8%BC%AA" target="_blank">地圖連結</a></p><div class="mapcode">MAPCODE：46 522 433*56</div><div class="note">⭐ 也是一個吃東西的地方，吃不飽的那種 </div></div></div>
+      <div class="content-card">
+        <h4>地獄蒸工房 鐵輪</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E5%9C%B0%E7%8D%84%E8%92%B8%E5%B7%A5%E6%88%BF+%E9%90%B5%E8%BC%AA" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：46 522 433*56</div>
+        <div class="note">⭐ 也是一個吃東西的地方，吃不飽的那種</div>
+          <div class="drive-info">
+          🚙✨ <strong>鐵輪 → 甘味茶屋</strong><br>
+          約 1.8 公里、5–7 分鐘<br>
+          🛣 県道218號（市區道路）
+        </div>       
+      </div>
+    </div>
+
     <div class="timeline-item">
       <div class="time-box">17:30</div>
-      <div class="content-card"><h4>晚餐🥣 別府甘味茶屋</h4><p><a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E5%BA%9C%E7%94%98%E5%91%B3%E8%8C%B6%E5%B1%8B" target="_blank">地圖連結</a></p><div class="mapcode">MAPCODE：46 493 800*48</div><div class="note">⭐ 12/3 預約 <a href="https://epark.jp/shopinfo/jsp609274/?utm_source=justpass_widget&utm_medium=referral&widgetimp=1" target="_blank">EPARK</a></div></div></div>
+      <div class="content-card">
+        <h4>晚餐🥣 別府甘味茶屋</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E5%88%A5%E5%BA%9C%E7%94%98%E5%91%B3%E8%8C%B6%E5%B1%8B" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：46 493 800*48</div>
+        <div class="note">⭐ 當天使用 APP 預約</div>
+        <div class="drive-info">
+          🚙✨ <strong>甘味茶屋 → 唐吉訶德</strong><br>
+          約 3.7 公里、10–12 分鐘<br>
+          🛣 國道10號（主要幹道）
+        </div>
+      </div>
+    </div>
+
     <div class="timeline-item">
       <div class="time-box">19:30</div>
-      <div class="content-card"><h4>唐吉訶德 別府店</h4><p><a href="https://maps.app.goo.gl/xcW19TAnzxTH8jzL6?g_st=com.google.maps.preview.copy" target="_blank">地圖連結</a></p><div class="mapcode">MAPCODE：46 405 564*44</div></div></div>
-    
+      <div class="content-card">
+        <h4>唐吉訶德 別府店</h4>
+        <p><a href="https://maps.app.goo.gl/xcW19TAnzxTH8jzL6?g_st=com.google.maps.preview.copy" target="_blank">地圖連結</a></p>
+        <div class="mapcode">📍 MAPCODE：46 405 564*44</div>
+        <div class="drive-info">
+          🚙✨ <strong>唐吉訶德 → 別邸 安</strong><br>
+          約 4–5 公里、10–12 分鐘<br>
+          🛣 國道10號 → 市區道路 → 上坡回民宿
+        </div>
+      </div>
+    </div>
+
     <div class="timeline-item">
       <div class="time-box">21:00</div>
-      <div class="content-card"><h4>回民宿 別邸 安</h4></div>
+      <div class="content-card">
+        <h4>回民宿 別邸 安</h4>
+      <div class="drive-info">
+          🚙✨ <strong>民宿 → Marushoku</strong><br>
+          約 2–3 公里、5–8 分鐘<br>
+          🛣 民宿小路 → 県道52號
+        </div>
+      </div>
     </div>
-    
+
     <div class="timeline-item">
       <div class="time-box">21:30</div>
       <div class="content-card">
-        <h4>民宿附近超市 Marushoku</h4><p><a href="https://www.google.com/maps/search/?api=1&query=%E3%83%9E%E3%83%AB%E3%82%B7%E3%83%A7%E3%82%AF+%E3%82%84%E3%81%BE%E3%81%AA%E3%81%BF%E5%BA%97" target="_blank">地圖連結</a></p>
-        <div class="mapcode">MAPCODE：46 522 175*46</div>
-        <div class="note">⭐ 要記得買和牛跟泡麵 </div>
+        <h4>民宿附近超市 Marushoku</h4>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=%E3%83%9E%E3%83%AB%E3%82%B7%E3%83%A7%E3%82%AF+%E3%82%84%E3%81%BE%E3%81%AA%E3%81%BF%E5%BA%97" target="_blank">地圖連結</a></p>
+        <div class="mapcode">📍 MAPCODE：46 522 175*46</div>
+        <div class="note">⭐ 要記得買和牛跟泡麵</div>       
       </div>
     </div>
-    
   </div>
 </div>
+  
 
 <div id="day3" class="page" style="display:none;">
   <div class="day-header">
@@ -602,21 +611,15 @@ a:hover {
     <span class="day-title">🎐 湯布院散策 → 回到福岡</span>
   </div>
 
-  <!-- 新增：D3 天氣 (湯布院) -->
-  <div class="weather-widget" data-lat="33.260" data-lon="131.350">
-    <span>🌤️ 湯布院天氣：<span class="w-temp">--</span>°C <span class="w-desc"></span></span>
-    <button class="weather-btn" onclick="getWeather(this)">更新天氣</button>
-  </div>
-
   <div class="timeline-container">
-
     <div class="timeline-item">
       <div class="time-box">09:00</div>
       <div class="content-card">
         <h4>出發：別邸 安</h4>
         <div class="drive-info">
           🚙✨ <strong>別府 → 湯布院</strong><br>
-          約 25–30 分鐘、23 公里
+          約 23 公里、25–30 分鐘<br>
+          🛣 大分自動車道／県道11號（山路視狀況調整）
         </div>
       </div>
     </div>
@@ -625,45 +628,64 @@ a:hover {
       <div class="time-box">09:36</div>
       <div class="content-card">
         <h4>Times 停車場 – 湯布院金鱗湖</h4>
-        <p><a href="https://www.google.com/maps/search/?api=1&query=Times+%E6%B9%AF%E5%B8%83%E9%99%BD+%E9%87%91%E9%B1%97%E6%B9%96" target="_blank">地圖連結</a></p>
-        <div class="mapcode">MAPCODE：269 359 614*42（第一停車場) </div>
-        <div class="note">⭐ 車子停在這邊，走路逛商店街，金鱗湖到商店街盡頭單程約1公里  </div>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=Times+%E6%B9%AF%E5%B8%83%E9%99%BD+%E9%87%91%E9%B1%97%E6%B9%96" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：269 359 614*42（第一停車場）</div>
+        <div class="note">
+          ⭐ 車子停在這邊，走路逛商店街，金鱗湖到商店街盡頭單程約 1 公里
+        </div>
       </div>
     </div>
 
     <div class="timeline-item">
       <div class="time-box">10:40</div>
       <div class="content-card">
-        <h4>天祖神社</h4>
-        <p><a href="https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E5%B8%83%E9%99%BD+%E5%A4%A9%E7%A5%96%E7%A5%9E%E7%A4%BE" target="_blank">地圖連結</a></p>
+        <h4>天祖神社（宇奈岐日女神社）</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E5%B8%83%E9%99%BD+%E5%A4%A9%E7%A5%96%E7%A5%9E%E7%A4%BE" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：269 329 394*16</div>
       </div>
     </div>
 
     <div class="timeline-item">
-      <div class="time-box">11:18</div>
+      <div class="time-box">11:00</div>
       <div class="content-card">
-        <h4>湯布院商店街</h4>
-        <p><a href="https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E5%B8%83%E9%99%BD+%E5%95%86%E5%BA%97%E8%A1%97" target="_blank">地圖連結</a></p>
+        <h4>湯布院商店街（湯の坪橫丁一帶）</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E5%B8%83%E9%99%BD+%E5%95%86%E5%BA%97%E8%A1%97" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：269 358 685*51</div>
+        <div class="note">⭐ 要去吃花麴菊家 紅豆銅鑼燒 </div>
       </div>
     </div>
 
     <div class="timeline-item">
-      <div class="time-box">13:21</div>
+      <div class="time-box">12:00</div>
       <div class="content-card">
         <h4>B-SPEAK 本店（蛋糕卷）</h4>
-        <p><a href="https://www.google.com/maps/search/?api=1&query=B-speak+Yufuin" target="_blank">地圖連結</a></p>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=B-speak+Yufuin" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：269 358 432*68</div>
+        <div class="note">⭐ 網路上很推薦的蛋糕捲店</div>
       </div>
-      <div class="note">⭐ 網路上很推薦的蛋糕捲店 </div>
     </div>
 
     <div class="timeline-item">
-      <div class="time-box">13:32</div>
+      <div class="time-box">13:00</div>
       <div class="content-card">
         <h4>湯之坪街道</h4>
-        <p><a href="https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E3%81%AE%E5%9D%AA%E8%A1%97%E9%81%93" target="_blank">地圖連結</a></p>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E3%81%AE%E5%9D%AA%E8%A1%97%E9%81%93" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：269 358 656*00</div>
+        <div class="note">⭐ 逛到差不多、看小孩體力，下午回福岡，最晚2點半離開 </div>
         <div class="drive-info">
-          🚙✨ <strong>湯布院 → 福岡市區民宿 </strong><br>
-          高速約 1.5 小時、約 110 公里
+          🚙✨ <strong>湯布院 → 福岡市區民宿（SOTEL 一帶）</strong><br>
+          約 110 公里、約 1.5 小時<br>
+          🛣 大分自動車道 → 九州自動車道 → 福岡都市高速／市區道路
         </div>
       </div>
     </div>
@@ -672,8 +694,11 @@ a:hover {
       <div class="time-box">16:00</div>
       <div class="content-card">
         <h4>Check-in：SOTEL Fukuoka Airport No.7</h4>
-        <p><a href="https://www.google.com/maps/search/?api=1&query=SOTEL+Fukuoka+Airport+No.7" target="_blank">地圖連結</a></p>
-        <div class="mapcode">MAPCODE：13 383 288*84</div>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=SOTEL+Fukuoka+Airport+No.7" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：13 383 288*84</div>
+        <div class="note">⭐ 放東西休息一下</div>
       </div>
     </div>
 
@@ -681,94 +706,259 @@ a:hover {
       <div class="time-box">18:00</div>
       <div class="content-card">
         <h4>焼肉 にく田 天神/赤坂 NIKUDEN</h4>
+        <p>
+          <a href="https://nikuden.com/" target="_blank">官方網站</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：13 316 328*56</div>
         <div class="note">‼️ 已預約，待確認‼️</div>
-        <div class="mapcode">MAPCODE：13 316 328*56</div>
+        <div class="drive-info">
+          🚙✨ <strong> 民宿SOTEL → NIKUDEN（天神／赤坂一帶）</strong><br>
+          約 9–11 公里、25–35 分鐘<br>
+          🛣 福岡都市高速／市區幹道，注意下班時段可能會塞車
+        </div>
       </div>
     </div>
 
     <div class="timeline-item">
       <div class="time-box">20:30</div>
       <div class="content-card">
-        <h4>天神中央公園 (聖誕市集)</h4>
+        <h4>天神中央公園（聖誕市集）</h4>
         <p><a href="https://maps.app.goo.gl/8Ntk1iky8jnMZ5ys9?g_st=com.google.maps.preview.copy" target="_blank">地圖連結</a></p>
+        <div class="note">⭐ 從 NIKUDEN 步行可達，約 5–10 分鐘，吃完肉換聖誕氣氛散步走一走 🎄</div>
+        <div class="drive-info">
+          🚙✨ <strong>天神一帶 → TRIALsmart KASUYA</strong><br>
+          約 11–13 公里、20–25 分鐘<br>
+          🛣 福岡都市高速／國道 3 號，接近機場／粕屋一帶
+        </div>
       </div>
     </div>
-
     <div class="timeline-item">
       <div class="time-box">20:30</div>
       <div class="content-card">
         <h4>24H 超市 TRIALsmart KASUYA</h4>
-        <p><a href="https://www.google.com/maps/search/?api=1&query=%E3%83%88%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%AB+%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E7%B2%95%E5%B1%8B" target="_blank">地圖連結</a></p>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E3%83%88%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%AB+%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E7%B2%95%E5%B1%8B" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：13 383 715*87</div>
+        <div class="note">⭐ 看小孩狀況決定要不要繞去補貨</div>
+         <div class="drive-info">
+          🚙✨ <strong>TRIALsmart KASUYA → SOTEL</strong><br>
+          約 2–3 公里、5–8 分鐘<br>
+          🛣 區域小路，回家前最後補貨路線
+        </div>
       </div>
     </div>
-
     <div class="timeline-item">
       <div class="time-box">20:30</div>
       <div class="content-card">
-        <h4>回到 SOTEL</h4>
+        <h4>回到民宿SOTEL</h4>
+         <p><a href="https://www.google.com/maps/search/?api=1&query=SOTEL+Fukuoka+Airport+No.7" target="_blank">地圖連結</a> </p>
+        <div class="mapcode">📍 MAPCODE：13 316 328*56</div>
       </div>
     </div>
 
   </div>
 </div>
-
-
 <div id="day4" class="page" style="display:none;">
-  <div class="day-header"><span class="day-date">12/20 (六) D4</span><span class="day-title">⛩ 太宰府＋Outlet＋聖誕市集</span></div>
-  
-  <!-- 新增：D4 天氣 (太宰府) -->
-  <div class="weather-widget" data-lat="33.515" data-lon="130.530">
-    <span>🌤️ 太宰府天氣：<span class="w-temp">--</span>°C <span class="w-desc"></span></span>
-    <button class="weather-btn" onclick="getWeather(this)">更新天氣</button>
+  <div class="day-header">
+    <span class="day-date">12/20 (六) D4</span>
+    <span class="day-title">⛩ 太宰府＋鳥栖 Outlet＋大名聖誕市集</span>
   </div>
 
   <div class="timeline-container">
     <div class="timeline-item">
       <div class="time-box">09:00</div>
-      <div class="content-card"><h4>出發：SOTEL</h4>
-      <div class="drive-info">🚙✨ <strong>SOTEL → 太宰府天滿宮</strong><br>
-        約 20–30 分鐘、13–15 公里 ☕</div></div></div>
-    <div class="timeline-item"><div class="time-box">09:30</div><div class="content-card"><h4>太宰府天滿宮</h4><p><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%AA%E5%AE%B0%E5%BA%9C%E5%A4%A9%E6%BA%80%E5%AE%AE" target="_blank">地圖連結</a></p><div class="mapcode">MAPCODE：55 364 073*24</div><div class="drive-info">🚙✨ <strong>太宰府 → 鳥栖 Premium Outlets</strong><br>高速約 20–25 分鐘</div></div></div>
-    <div class="timeline-item"><div class="time-box">11:30</div><div class="content-card"><h4>鳥栖 Premium Outlets</h4><p><a href="https://www.google.com/maps/search/?api=1&query=%E9%B3%A5%E6%A0%96+Premium+Outlets" target="_blank">地圖連結</a></p><div class="mapcode">MAPCODE：37 856 380*68</div><div class="drive-info">🚙✨ <strong>鳥栖 → 大名花園城市</strong><br>約 30–40 分鐘</div></div></div>
-    <div class="timeline-item"><div class="time-box">18:00</div><div class="content-card"><h4>聖誕市集（福岡大名花園城市）</h4><p><a href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E5%A4%A7%E5%90%8D%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%82%B7%E3%83%86%E3%82%A3" target="_blank">地圖連結</a></p><div class="mapcode">MAPCODE：13 317 349*03</div></div></div>
-    <div class="timeline-item"><div class="time-box">20:00</div><div class="content-card"><h4>回到 SOTEL</h4></div></div>
-    <div class="timeline-item"><div class="time-box">20:30</div><div class="content-card"><h4>24H 超市 TRIALsmart KASUYA</h4><p><a href="https://www.google.com/maps/search/?api=1&query=TRIALsmart+KASUYA" target="_blank">地圖連結</a></p></div></div>
-  </div>
-</div>
-
-<div id="day5" class="page" style="display:none;">
-  <div class="day-header"><span class="day-date">12/21 (日) D5</span><span class="day-title">🏡 福岡市區＋還車返家</span></div>
-  
-  <!-- 新增：D5 天氣 (福岡) -->
-  <div class="weather-widget" data-lat="33.590" data-lon="130.401">
-    <span>🌤️ 福岡天氣：<span class="w-temp">--</span>°C <span class="w-desc"></span></span>
-    <button class="weather-btn" onclick="getWeather(this)">更新天氣</button>
-  </div>
-
-  <div class="timeline-container">
-    <div class="timeline-item"><div class="time-box">10:00</div>
-      <div class="content-card"><h4>出發：SOTEL</h4>
-        <div class="drive-info">🚙✨ <strong>SOTEL → 櫛田神社</strong><br>
-          約 20 分鐘、8–10 公里</div>
+      <div class="content-card">
+        <h4>出發：SOTEL Fukuoka Airport No.7</h4>
+        <div class="drive-info">
+          🚙✨ <strong>SOTEL → 太宰府天滿宮</strong><br>
+          約 13–15 公里、20–30 分鐘<br>
+          🛣 福岡都市高速＋一般市區道路
+        </div>
       </div>
     </div>
-    <div class="timeline-item"><div class="time-box">10:30</div>
-      <div class="content-card"><h4>櫛田神社</h4>
-        <p><a href="https://www.google.com/maps/search/?api=1&query=%E6%AB%9B%E7%94%B0%E7%A5%9E%E7%A4%BE" target="_blank">地圖連結</a></p><div class="mapcode">MAPCODE：13 319 706*83</div></div></div>
-    <div class="timeline-item"><div class="time-box">11:38</div>
-      <div class="content-card"><h4>一蘭拉麵 本社總本店（中洲）</h4><p><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%80%E8%98%AD+%E6%9C%AC%E7%A4%BE%E7%B7%8F%E6%9C%AC%E5%BA%97+%E4%B8%AD%E6%B4%B2" target="_blank">地圖連結</a></p><div class="mapcode">MAPCODE：13 318 895*82</div></div></div>
-    <div class="timeline-item"><div class="time-box">13:13</div>
-      <div class="content-card"><h4>藍瓶咖啡 福岡天神店</h4><p><a href="https://www.google.com/maps/search/?api=1&query=Blue+Bottle+Coffee+Fukuoka+Tenjin" target="_blank">地圖連結</a></p><div class="drive-info">🚙✨ <strong>天神 → Budget 福岡空港店</strong><br>約 25–30 分鐘</div></div></div>
-    <div class="timeline-item"><div class="time-box">14:00</div><div class="content-card"><h4>福岡塔（福岡タワー）</h4><p><a href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E3%82%BF%E3%83%AF%E3%83%BC" target="_blank">地圖連結</a></p><div class="note">⭐ 到時候再看有沒有去</div></div></div>
-    <div class="timeline-item"><div class="time-box">16:00</div><div class="content-card"><h4>Budget（還車）</h4><p><a href="https://www.google.com/maps/search/?api=1&query=Budget+Rent+a+Car+Fukuoka+Airport" target="_blank">地圖連結</a></p><div class="drive-info">🚙✨ <strong>Budget → 福岡國際機場 T1</strong><br>約 5–10 分鐘，搭接駁車去機場 ✈️</div></div></div>
-    <div class="timeline-item"><div class="time-box">17:00</div><div class="content-card"><h4>抵達 福岡國際機場 T1</h4></div></div>
+
     <div class="timeline-item">
-      <div class="time-box">20:35</div>
-      <div class="content-card"><h4>華航 CI117 起飛✈️ 桃園國際機場 </h4></div>
+      <div class="time-box">09:30</div>
+      <div class="content-card">
+        <h4>太宰府天滿宮</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%AA%E5%AE%B0%E5%BA%9C%E5%A4%A9%E6%BA%80%E5%AE%AE" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：55 364 073*24</div>
+        <div class="note">⭐ 逛參道、吃梅枝餅，這裡好像有一家漂亮的星巴克，預計停留約 1.5–2 小時 </div>
+        <div class="drive-info">
+          🚙✨ <strong>太宰府 → 鳥栖 Premium Outlets</strong><br>
+          約 15–18 公里、20–25 分鐘<br>
+          🛣 九州自動車道（高速）→ 鳥栖出口
+        </div>
+      </div>
     </div>
+    
+    <div class="timeline-item">
+      <div class="time-box">11:30</div>
+      <div class="content-card">
+        <h4>鳥栖 Premium Outlets 鳥栖暢貨中心</h4>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=%E9%B3%A5%E6%A0%96+Premium+Outlets" target="_blank">地圖連結</a></p>
+        <div class="mapcode">📍 MAPCODE：37 856 380*68</div>
+        <div class="note"> ⭐ 在這裡解決午餐＋血拚，建議最晚 17:00 離開 🛍️ </div>
+        <div class="drive-info">
+          🚙✨ <strong>鳥栖 Outlet → 福岡大名花園城市</strong><br>
+          約 27–30 公里、30–40 分鐘<br>
+          🛣 九州自動車道 ＋ 福岡都市高速 → 市區道路
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">18:00</div>
+      <div class="content-card">
+        <h4>聖誕市集（福岡大名ガーデンシティ）</h4>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E5%A4%A7%E5%90%8D%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%82%B7%E3%83%86%E3%82%A3" target="_blank">地圖連結</a></p>
+        <div class="mapcode">📍 MAPCODE：13 317 349*03</div>
+        <div class="note"> ⭐ 看燈飾、喝熱紅酒／熱可可，大人拍美照、小孩放電 🎄  </div>
+        <div class="drive-info">
+          🚙✨ <strong>大名花園城市 → SOTEL</strong><br>
+          約 14–16 公里、25–35 分鐘<br>
+          🛣 福岡市區道路 ＋ 都市高速（夜間視線注意）
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">20:00</div>
+      <div class="content-card">
+        <h4>回到 SOTEL Fukuoka Airport No.7</h4>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=SOTEL+Fukuoka+Airport+No.7" target="_blank">地圖連結</a></p>
+        <div class="mapcode">📍 MAPCODE：13 383 288*84</div>
+        <div class="drive-info">
+          🚙✨ <strong>SOTEL → TRIALsmart KASUYA</strong><br>
+          約 2–3 公里、5–8 分鐘<br>
+          🛣 住宅區小路 → 県道 → 大型賣場停車場
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">20:30</div>
+      <div class="content-card">
+        <h4>24H 超市 TRIALsmart KASUYA 補貨</h4>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=TRIALsmart+KASUYA" target="_blank">地圖連結</a></p>
+        <div class="mapcode">📍 MAPCODE：13 383 715*87</div>
+        <div class="drive-info">
+          🚙✨ <strong>TRIALsmart → SOTEL</strong><br>
+          約 2–3 公里、5–8 分鐘<br>
+          🛣 同一條路折返，注意晚上指標
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
+<div id="day5" class="page" style="display:none;">
+  <div class="day-header"><span class="day-date">12/21 (日) D5</span><span class="day-title">🏡 福岡市區＋還車返家</span></div>
+  <div class="timeline-container">
 
+    <div class="timeline-item">
+      <div class="time-box">10:00</div>
+      <div class="content-card">
+        <h4>出發：SOTEL</h4>
+        <div class="drive-info">
+          🚙✨ <strong>SOTEL → 櫛田神社</strong><br>
+          約 8–10 公里、20 分鐘<br>
+          🛣 福岡郊區道路 → 市區道路
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">10:30</div>
+      <div class="content-card">
+        <h4>櫛田神社</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E6%AB%9B%E7%94%B0%E7%A5%9E%E7%A4%BE" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：13 319 706*83</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">11:38</div>
+      <div class="content-card">
+        <h4>一蘭拉麵 本社總本店（中洲）</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%80%E8%98%AD+%E6%9C%AC%E7%A4%BE%E7%B7%8F%E6%9C%AC%E5%BA%97+%E4%B8%AD%E6%B4%B2" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：13 318 895*82</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">13:13</div>
+      <div class="content-card">
+        <h4>藍瓶咖啡 福岡天神店</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=Blue+Bottle+Coffee+Fukuoka+Tenjin" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：13 318 128*21</div>
+        <div class="drive-info">
+          🚙✨ <strong>一蘭（中洲） → 藍瓶咖啡 天神</strong><br>
+          約 1.5–2 公里、8–12 分鐘<br>
+          🛣 市區一般道路（過河小橋＋鬧區路段）
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">14:00</div>
+      <div class="content-card">
+        <h4>福岡塔（福岡タワー）</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E3%82%BF%E3%83%AF%E3%83%BC" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：13 312 733*75</div>
+        <div class="note">⭐ 到時候再看有沒有去</div>
+        <div class="drive-info">
+          🚙✨ <strong>天神 → 福岡塔</strong><br>
+          約 7–9 公里、20–25 分鐘<br>
+          🛣 都市高速 or 海邊市區道路（依導航安排）
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">16:30</div>
+      <div class="content-card">
+        <h4>Budget（還車）</h4>
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=Budget+Rent+a+Car+Fukuoka+Airport" target="_blank">地圖連結</a>
+        </p>
+        <div class="mapcode">📍 MAPCODE：13 354 156*17</div>
+        <div class="drive-info">
+          🚙✨ <strong>福岡塔／市區 → Budget 福岡空港店</strong><br>
+          約 8–10 公里、20–25 分鐘<br>
+          🛣 都市高速 ＋ 機場周邊道路<br>
+          ✈️ 之後搭接駁車前往福岡國際機場 T1
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time-box">17:00</div>
+      <div class="content-card">
+        <h4>抵達 福岡國際機場 T1</h4>
+        <div class="note">⭐ JCB的機場貴賓室  </div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="time-box">20:35</div>
+      <div class="content-card">
+        <h4>華航 CI117 起飛✈️ 桃園國際機場</h4>
+      </div>
+    </div>
+
+  </div>
+</div>
 <div id="expense" class="page" style="display:none;">
   <div class="card" id="rate-calculator">
     <div class="card-title">💳 匯率小幫手</div>
@@ -831,43 +1021,6 @@ a:hover {
 </div>
 
 <script>
-// --- 新增：天氣功能 ---
-const weatherCodes = {
-  0: "晴朗", 1: "晴時多雲", 2: "多雲", 3: "陰天",
-  45: "霧", 48: "霧", 51: "毛毛雨", 53: "毛毛雨", 55: "毛毛雨",
-  61: "小雨", 63: "中雨", 65: "大雨", 80: "陣雨", 81: "強陣雨", 95: "雷雨"
-};
-
-async function getWeather(btn) {
-  const widget = btn.closest('.weather-widget');
-  const lat = widget.dataset.lat;
-  const lon = widget.dataset.lon;
-  const tempSpan = widget.querySelector('.w-temp');
-  const descSpan = widget.querySelector('.w-desc');
-
-  btn.textContent = "載入中...";
-  btn.disabled = true;
-
-  try {
-    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=Asia%2FTokyo`);
-    const data = await res.json();
-    if(data.current_weather) {
-      tempSpan.textContent = data.current_weather.temperature;
-      const code = data.current_weather.weathercode;
-      descSpan.textContent = weatherCodes[code] || "多雲";
-      btn.textContent = "已更新";
-    }
-  } catch(e) {
-    btn.textContent = "失敗";
-    console.error(e);
-  } finally {
-    setTimeout(() => {
-      btn.disabled = false;
-      if(btn.textContent === "已更新") btn.textContent = "更新天氣";
-    }, 2000);
-  }
-}
-
 // --- 匯率換算功能 ---
 const rateInput = document.getElementById('exchange-rate');
 const jpyInput = document.getElementById('calc-jpy');
@@ -1029,5 +1182,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
-
