@@ -5,7 +5,6 @@
 <title>2025懶豬的福岡之旅</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
 :root {
   /* 主色：莫蘭迪綠灰 */
   --accent: rgb(188, 204, 196);               /* #BCCCC4 */
@@ -31,13 +30,12 @@ body {
   color: var(--text-main);
 }
 
-/* Tab 切換列 */
+/* Tab 切換列（你的選擇：B 款 → 超淡莫蘭迪綠灰） */
 .tab-bar {
   display: flex;
   position: sticky;
   top: 0;
-  background: rgba(246, 244, 241, 0.96);
-  backdrop-filter: blur(6px);
+  background: rgba(188, 204, 196, 0.12);  /* B：幾乎白，但帶莫蘭迪氣息 */
   padding: 10px 0;
   border-bottom: 1px solid rgba(0,0,0,0.06);
   z-index: 10;
@@ -103,6 +101,7 @@ body {
   color: #2c6b3a;
 }
 
+/* 文字類 */
 .section-title {
   font-weight: 600;
   margin: 10px 0 6px;
@@ -127,6 +126,7 @@ body {
   color: var(--text-sub);
 }
 
+/* 連結 */
 a {
   color: var(--link);
   text-decoration: none;
@@ -309,7 +309,7 @@ a:hover {
   max-width: 60px;
   border-radius: 14px;
   border: 1px solid var(--accent-border);
-  background: var(--accent-soft);
+  background: var(--accent-soft); /* 行程小卡底色 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -363,7 +363,6 @@ a:hover {
   display: inline-block;
 }
 .drive-info strong { font-weight: 700; }
-</style>
 </head>
 
 <body>
